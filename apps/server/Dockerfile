@@ -1,12 +1,15 @@
 FROM base-image AS backend-build
 
 WORKDIR /app/apps/server
-
 COPY ./apps/server .
-COPY --from=base-image /app/packages /app/packages
 
-RUN pnpm install --offline --frozen-lockfile
-RUN pnpm swagger-auto
-RUN pnpm run build
+RUN pnpm install --offline --frozen-lockfile \ pnpm run build
 
-CMD ["pnpm", "run", "start"]
+FROM node:20-alpine AS backend
+
+WORKDIR /app/apps/server
+COPY --from=backend-build /app/apps/client/dist .
+
+RUN pnpm install --offline --production --frozen-lockfile
+
+CMD ["pnpm", "start"]
