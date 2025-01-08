@@ -15,6 +15,6 @@ COPY --from=backend-build /app/apps/server/package.json ./package.json
 COPY --from=backend-build /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY ./apps/server/.env ./
 
-RUN npm install -g pnpm && pnpm install --offline --production --frozen-lockfile
+RUN npm install -g pnpm && pnpm fetch --prod && pnpm install --offline --prod
 
 CMD ["pnpm", "start"]
