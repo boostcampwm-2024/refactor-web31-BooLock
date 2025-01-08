@@ -11,7 +11,7 @@ FROM node:20-alpine AS backend
 
 WORKDIR /app/apps/server
 COPY --from=backend-build /app/packages ./packages
-COPY --from=backend-build /app/apps/server/package.json /app/pnpm-workspace.yaml /apps/server/.env ./
+COPY --from=backend-build /app/apps/server/package.json /app/pnpm-workspace.yaml /app/apps/server/.env ./
 COPY --from=backend-build /app/apps/server/node_modules ./node_modules
 COPY --from=backend-build /app/apps/server/dist ./dist
 
