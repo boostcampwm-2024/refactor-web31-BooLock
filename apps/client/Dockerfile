@@ -2,15 +2,15 @@ FROM base-image AS frontend-build
 
 WORKDIR /app/apps/client
 COPY ./apps/client .
-RUN pnpm install --offline --frozen-lockfile \
+RUN pnpm install --offline --frozen-lockfile &&\
   pnpm run build
 
 FROM nginx:alpine AS frontend
 
-COPY /apps/client/nginx.conf /etc/nginx/conf.d/ \
-  /apps/client/ssl /etc/nginx/
-RUN chmod 644 /etc/nginx/ssl/fullchain.pem \ 
-  chmod 600 /etc/nginx/ssl/privkey.pem \ 
+COPY /apps/client/nginx.conf /etc/nginx/conf.d/ 
+COPY /apps/client/ssl /etc/nginx/
+RUN chmod 644 /etc/nginx/ssl/fullchain.pem &&\ 
+  chmod 600 /etc/nginx/ssl/privkey.pem &&\ 
   chown -R nginx:nginx /usr/share/nginx/html /etc/nginx/ssl
 
 COPY --from=frontend-build /app/apps/client/dist /usr/share/nginx/html/

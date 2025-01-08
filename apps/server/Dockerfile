@@ -3,7 +3,8 @@ FROM base-image AS backend-build
 WORKDIR /app/apps/server
 COPY ./apps/server .
 
-RUN pnpm install --offline --frozen-lockfile \ pnpm run build
+RUN pnpm install --offline --frozen-lockfile &&\ 
+  pnpm run build
 
 FROM node:20-alpine AS backend
 
