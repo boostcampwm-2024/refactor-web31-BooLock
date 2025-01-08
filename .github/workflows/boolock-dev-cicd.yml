@@ -98,7 +98,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd boolock/web31-BooLock
+            cd boolock/refactor-web31-BooLock
             git checkout dev
             git pull origin dev
 
