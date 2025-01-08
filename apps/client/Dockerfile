@@ -7,8 +7,8 @@ RUN pnpm install --offline --frozen-lockfile &&\
 
 FROM nginx:alpine AS frontend
 
-COPY /apps/client/nginx.conf /etc/nginx/conf.d/ 
-COPY /apps/client/ssl /etc/nginx/
+COPY /apps/client/nginx.conf /etc/nginx/conf.d/default.conf
+COPY /apps/client/ssl /etc/nginx/ssl
 RUN chmod 644 /etc/nginx/ssl/fullchain.pem &&\ 
   chmod 600 /etc/nginx/ssl/privkey.pem &&\ 
   chown -R nginx:nginx /usr/share/nginx/html /etc/nginx/ssl
