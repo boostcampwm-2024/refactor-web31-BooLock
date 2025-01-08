@@ -10,15 +10,10 @@ RUN pnpm install --offline --frozen-lockfile && \
 FROM node:20-alpine AS backend
 
 WORKDIR /app/apps/server
-COPY --from=backend-build /app/apps/server/package.json \
-  /app/apps/server/node_modules \
-  /app/pnpm-workspace.yaml \
-  /app/packages \
-  ./
+COPY --from=backend-build /app/apps/server/package.json /app/apps/server/node_modules /app/pnpm-workspace.yaml /app/packages ./
 COPY ./apps/server/.env ./
 COPY --from=backend-build /app/apps/server/dist ./dist
 
-
 RUN npm install -g pnpm && pnpm prune --prod
 
-CMD ["node", "dist/index.js"]
+CMD ["pnpm", "start"]
