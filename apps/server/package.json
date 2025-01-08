@@ -15,6 +15,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mongoose": "^8.8.0",
+    "multer": "1.4.5-lts.1",
     "tunnel-ssh": "^5.1.2"
   },
   "devDependencies": {
@@ -26,7 +27,6 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.7",
     "aws-sdk": "^2.1692.0",
-    "multer": "1.4.5-lts.1",
     "nodemon": "^3.1.7",
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
