@@ -4,6 +4,7 @@ WORKDIR /app/apps/server
 COPY ./apps/server .
 
 RUN pnpm install --offline --frozen-lockfile &&\ 
+  pnpm swagger-auto && \
   pnpm run build
 
 FROM node:20-alpine AS backend
