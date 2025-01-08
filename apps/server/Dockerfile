@@ -10,7 +10,7 @@ RUN pnpm install --offline --frozen-lockfile &&\
 FROM node:20-alpine AS backend
 
 WORKDIR /app/apps/server
-COPY --from=backend-build /app/apps/client/dist .
+COPY --from=backend-build /app/apps/server/dist .
 
 RUN pnpm install --offline --production --frozen-lockfile
 
