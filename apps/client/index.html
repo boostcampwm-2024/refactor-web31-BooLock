@@ -5,6 +5,20 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/images/boolock_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-K9BX4HFG');
+    </script>
+    <!-- End Google Tag Manager -->
     <title>BooLock</title>
     <meta
       name="description"
@@ -14,10 +28,7 @@
     <meta name="author" content="부스트캠프 9기 Web31팀" />
     <!-- Open Graph -->
     <meta property="og:title" content="BooLock" />
-    <meta
-      property="og:description"
-      content="쉽게 배우는 블록 코딩"
-    />
+    <meta property="og:description" content="쉽게 배우는 블록 코딩" />
     <meta property="og:url" content="https://boolock.site/" />
     <meta property="og:image" content="/images/boolock_thumnail.png" />
     <meta property="og:image:alt" content="블록코딩 플랫폼 BooLock의 썸네일" />
@@ -35,5 +46,15 @@
     <div id="root" aria-label="BooLock 플랫폼"></div>
     <div id="dropdownDiv"></div>
     <script type="module" src="src/app/main.tsx" defer></script>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-K9BX4HFG"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
   </body>
 </html>
