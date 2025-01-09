@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useScrollPostion = () => {
-  const [scrollPosition, setScrollPostion] = useState<number>(0);
+export const useScrollPosition = () => {
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
   const ticking = useRef(false);
 
   useEffect(() => {
     const onScroll = () => {
       if (!ticking.current) {
         requestAnimationFrame(() => {
-          setScrollPostion(window.scrollY);
+          setScrollPosition(window.scrollY);
           ticking.current = false;
         });
         ticking.current = true;
