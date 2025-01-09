@@ -1,24 +1,24 @@
 <!doctype html>
 <html lang="ko">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SMXGZQRD0S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-SMXGZQRD0S', {
+        debug_mode: true, // 디버그 모드 활성화
+        traffic_type: 'test_traffic', // 필터에 걸리지 않는 트래픽 타입
+      });
+    </script>
     <!-- 기본 meta 태그 및 link -->
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/images/boolock_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Google Tag Manager -->
-    <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != 'dataLayer' ? '&l=' + l : '';
-        j.async = true;
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-K9BX4HFG');
-    </script>
-    <!-- End Google Tag Manager -->
     <title>BooLock</title>
     <meta
       name="description"
@@ -46,15 +46,5 @@
     <div id="root" aria-label="BooLock 플랫폼"></div>
     <div id="dropdownDiv"></div>
     <script type="module" src="src/app/main.tsx" defer></script>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-K9BX4HFG"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
   </body>
 </html>
