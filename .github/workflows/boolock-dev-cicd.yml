@@ -104,7 +104,7 @@ jobs:
 
             echo "MONGO_URI=${{ secrets.DEPLOY_MONGO_URI }}"  > apps/server/.env
             echo "IS_LOCAL=false" >> apps/server/.env
-            echo "${{ secrets.DEPLOY_SERVER_CORS_ACCEPT }}" >> apps/server/.env
+            echo "SERVER_CORS_ACCEPT=${{ secrets.DEPLOY_SERVER_CORS_ACCEPT }}" >> apps/server/.env
             echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> apps/server/.env
             echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> apps/server/.env
             echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> apps/server/.env
