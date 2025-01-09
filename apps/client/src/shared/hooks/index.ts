@@ -15,5 +15,6 @@ export { workspaceKeys } from './query-key/workspaceKeys';
 
 export { usePreventLeaveWorkspacePage } from './usePreventLeaveWorkspacePage';
 export { useInfiniteScroll } from './useInfiniteScroll';
-export { useScrollPostion } from './useScrollPosition';
+export { useScrollPosition } from './useScrollPosition';
 export { useWindowSize } from './useWindowSize';
+export { useVirtualScroll } from './useVirtualScroll';
