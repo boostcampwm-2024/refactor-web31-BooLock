@@ -49,7 +49,7 @@ export const useVirtualScroll = <T>({
           2 * nodePadding
       )
     );
-    setTotalHeight(Math.floor(data!.length / nodePadding) * (renderedItemHeight + gapY));
+    setTotalHeight(Math.ceil(data!.length / nodePadding) * (renderedItemHeight + gapY));
   }, [start, screenHeight, data]);
 
   return { renderedData, offsetY, totalHeight };
