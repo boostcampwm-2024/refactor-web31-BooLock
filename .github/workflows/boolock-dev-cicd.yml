@@ -108,6 +108,7 @@ jobs:
             echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> apps/server/.env
             echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> apps/server/.env
             echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> apps/server/.env
+            echo "NODE_ENV=production" >> apps/server/.env
 
             echo "VITE_SERVER_URL=${{ secrets.DEPLOY_VITE_SERVER_URL }}" > apps/client/.env
             echo "VITE_STATIC_STORAGE_URL=${{ secrets.VITE_STATIC_STORAGE_URL }}" >> apps/client/.env
