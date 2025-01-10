@@ -17,3 +17,4 @@ export { capturePreview } from './capturePreview';
 export { coachMarkContent } from './coachMarkContent';
 export { IFRAME_ERROR_MESSAGE } from './iframeErrorMessage';
 export { exportPreviewHtml } from './exportPreviewHtml';
+export { initMixpanel, trackEvent } from './mixpanel';

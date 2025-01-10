@@ -12,6 +12,7 @@ type CssCategoryButtonProps = {
  */
 export const CssCategoryButton = ({ cssCategory }: CssCategoryButtonProps) => {
   const { selectedCssCategory, setSelectedCssCategory } = useCssPropsStore();
+
   return (
     <button
       key={cssCategory}

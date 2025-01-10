@@ -31,6 +31,7 @@ import FixedFlyout from '@/core/fixedFlyout';
 import TabbedToolbox from '@/core/tabbedToolbox';
 import { customTooltip } from '@/core/customTooltip';
 import { registerCustomComponents } from '@/core/register';
+import { removeCssClassNamePrefix, trackEvent } from '@/shared/utils';
 
 for (const blockType in Blockly.Blocks) {
   if (Object.prototype.hasOwnProperty.call(Blockly.Blocks, blockType)) {
@@ -104,6 +105,27 @@ export const WorkspaceContent = () => {
 
     // workspace 변화 감지해 자동 변환
     const handleAutoConversion = (event: Blockly.Events.Abstract) => {
+      if (isBlockLoadingFinish.current) {
+        if (event.type === Blockly.Events.BLOCK_CHANGE && 'name' in event && 'newValue' in event) {
+          trackEvent('block_content_changed', {
+            item: event.name,
+            value: event.newValue,
+          });
+        }
+        if (event.type === Blockly.Events.BLOCK_DELETE) {
+          trackEvent('block_deleted');
+        }
+        if (event.type === Blockly.Events.BLOCK_CREATE) {
+          trackEvent('block_created', {
+            // @ts-ignore
+            item: removeCssClassNamePrefix(event.json.type),
+          });
+        }
+        if (event.type === Blockly.Events.BLOCK_DRAG && 'isStart' in event && event.isStart) {
+          trackEvent('block_drag_completed');
+        }
+      }
+
       if (
         event.type === Blockly.Events.BLOCK_CREATE ||
         event.type === Blockly.Events.BLOCK_MOVE ||

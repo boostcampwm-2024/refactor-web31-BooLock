@@ -9,6 +9,7 @@ import { useCssPropsStore } from '@/shared/store';
  */
 export const CssOptionItemList = () => {
   const { selectedCssCategory } = useCssPropsStore();
+
   return (
     <article className="flex h-full w-full flex-col gap-4 overflow-y-auto p-3">
       {cssCategoryList

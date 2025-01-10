@@ -1,5 +1,6 @@
 import { TTotalCssPropertyObj } from '@/shared/types';
 import { create } from 'zustand';
+import { removeCssClassNamePrefix, trackEvent } from '../utils';
 
 type TcssProps = {
   currentCssClassName: string;
@@ -20,7 +21,7 @@ export const useCssPropsStore = create<TcssProps>((set) => {
     currentCssClassName: '',
     selectedCssCategory: '레이아웃',
     totalCssPropertyObj: {},
-    addNewCssClass: (newCssClass) =>
+    addNewCssClass: (newCssClass) => {
       set((state) => {
         if (!state.totalCssPropertyObj[newCssClass]) {
           return {
@@ -34,14 +35,28 @@ export const useCssPropsStore = create<TcssProps>((set) => {
           };
         }
         return {};
-      }),
-    setCurrentCssClassName: (currentCssClassName) => set({ currentCssClassName }),
-    setSelectedCssCategory: (selectedCssCategory) => set({ selectedCssCategory }),
-    setCheckedCssPropertyObj: (className, label, value) =>
+      });
+      trackEvent(`css_class_created`, {
+        item: newCssClass,
+      });
+    },
+    setCurrentCssClassName: (currentCssClassName) => {
+      set({ currentCssClassName });
+      trackEvent(`css_class_selected`, {
+        item: removeCssClassNamePrefix(currentCssClassName),
+      });
+    },
+    setSelectedCssCategory: (selectedCssCategory) => {
+      set({ selectedCssCategory });
+      trackEvent(`css_category_selected`, {
+        item: selectedCssCategory,
+      });
+    },
+    setCheckedCssPropertyObj: (className, label, value) => {
       set((state) => {
         const updatedObj = state.totalCssPropertyObj[className] || {
           checkedCssPropertyObj: {},
-          cssOptionObh: {},
+          cssOptionObj: {},
         };
         updatedObj.checkedCssPropertyObj[label] = value;
         return {
@@ -50,8 +65,12 @@ export const useCssPropsStore = create<TcssProps>((set) => {
             [className]: updatedObj,
           },
         };
-      }),
-    setCssOptionObj: (className, label, value) =>
+      });
+      trackEvent(`css_category_item_checked`, {
+        item: className,
+      });
+    },
+    setCssOptionObj: (className, label, value) => {
       set((state) => {
         const updatedObj = state.totalCssPropertyObj[className] || {
           checkedCssPropertyObj: {},
@@ -64,7 +83,12 @@ export const useCssPropsStore = create<TcssProps>((set) => {
             [className]: updatedObj,
           },
         };
-      }),
+      });
+      trackEvent(`css_category_item_inputted`, {
+        item: label,
+        value: value,
+      });
+    },
 
     initCssPropertyObj: (totalCssPropertyObj) =>
       set({ totalCssPropertyObj, currentCssClassName: '', selectedCssCategory: '레이아웃' }),
