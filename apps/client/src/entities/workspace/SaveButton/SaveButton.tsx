@@ -3,7 +3,7 @@ import * as Blockly from 'blockly/core';
 import { useCssPropsStore, useResetCssStore, useWorkspaceStore } from '@/shared/store';
 
 import { Spinner } from '@/shared/ui';
-import { capturePreview } from '@/shared/utils';
+import { capturePreview, trackEvent } from '@/shared/utils';
 import { cssStyleToolboxConfig } from '@/shared/blockly';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
@@ -25,6 +25,7 @@ export const SaveButton = () => {
   const [isCapture, setIsCapture] = useState<boolean>(false);
 
   const handleClick = async () => {
+    trackEvent('workspace_saved');
     try {
       const canvas = Blockly.serialization.workspaces.save(workspace!) as any;
       setIsCapture(true);
