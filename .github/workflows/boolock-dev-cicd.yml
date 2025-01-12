@@ -58,9 +58,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Docker Hub
-        run: sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-
       - name: Deploy with docker
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -84,7 +81,6 @@ jobs:
             echo "VITE_SERVER_URL=${{ secrets.DEPLOY_VITE_SERVER_URL }}" > apps/client/.env
             echo "VITE_STATIC_STORAGE_URL=${{ secrets.VITE_STATIC_STORAGE_URL }}" >> apps/client/.env
 
-            sudo docker compose pull
             sudo docker compose down
             sudo docker compose up -d --build
             sudo docker image prune -f
