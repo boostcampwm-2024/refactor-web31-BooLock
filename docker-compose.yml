@@ -2,8 +2,6 @@ services:
   frontend:
     build:
       image: ${DOCKERHUB_USERNAME}/boolock_client_test:latest
-      cache_from:
-        - ${DOCKERHUB_USERNAME}/boolock_base_test:latest
     ports:
       - '80:80'
       - '443:443'
@@ -11,7 +9,5 @@ services:
   backend:
     build:
       image: ${DOCKERHUB_USERNAME}/boolock_server_test:latest
-      cache_from:
-        - ${DOCKERHUB_USERNAME}/boolock_base_test:latest
     ports:
       - '3000:3000'
