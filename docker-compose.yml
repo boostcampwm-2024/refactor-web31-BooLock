@@ -1,12 +1,6 @@
 services:
-  base:
-    image: ${DOCKERHUB_USERNAME}/base-image:latest
-    pull_policy: always
-
   frontend:
     image: ${DOCKERHUB_USERNAME}/boolock_client_test:latest
-    depends_on:
-      - base
     pull_policy: always
     ports:
       - '80:80'
@@ -14,8 +8,6 @@ services:
 
   backend:
     image: ${DOCKERHUB_USERNAME}/boolock_server_test:latest
-    depends_on:
-      - base
     pull_policy: always
     ports:
       - '3000:3000'
