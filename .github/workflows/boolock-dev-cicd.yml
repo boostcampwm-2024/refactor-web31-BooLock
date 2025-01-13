@@ -46,8 +46,8 @@ jobs:
 
       - name: Build base image
         run: |
-          docker build . --file Dockerfile.base --tag ${{ secrets.DOCKERHUB_USERNAME }}/base_image:latest
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base_image:latest base-image
+          docker build . --file Dockerfile.base --tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image
 
       - name: Build frontend and backend images
         run: |
@@ -56,7 +56,7 @@ jobs:
 
       - name: Docker Hub push
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/base_image:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
 
