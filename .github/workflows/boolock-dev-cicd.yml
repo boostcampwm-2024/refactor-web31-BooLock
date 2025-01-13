@@ -12,10 +12,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-          node-version: '20.x'
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Set BE .env
         run: |
@@ -38,28 +43,33 @@ jobs:
           echo "${{ secrets.SSL_FULLCHAIN }}" > apps/client/ssl/fullchain.pem
           echo "${{ secrets.SSL_PRIVKEY }}" > apps/client/ssl/privkey.pem
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Build base image
+      - name: Build and Push Base Image
         run: |
-          docker build . --file Dockerfile.base --tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image
+          docker buildx build \
+            --file Dockerfile.base \
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest \
+            --cache-from=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:cache \
+            --cache-to=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:cache,mode=max \
+            --push .
 
-      - name: Build frontend and backend images
+      - name: Build and Push Frontend Image
         run: |
-          docker build . --file apps/client/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          docker build . --file apps/server/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
+          docker buildx build \
+            --file apps/client/Dockerfile \
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest \
+            --cache-from=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:cache \
+            --cache-to=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:cache,mode=max \
+            --push .
 
-      - name: Docker Hub push
+      - name: Build and Push Backend Image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
-
+          docker buildx build \
+            --file apps/server/Dockerfile \
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest \
+            --cache-from=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:cache \
+            --cache-to=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:cache,mode=max \
+            --push .
+            
   deploy:
     needs: build
     runs-on: ubuntu-latest
