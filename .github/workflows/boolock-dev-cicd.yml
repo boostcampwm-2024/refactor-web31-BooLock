@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
@@ -50,13 +50,25 @@ jobs:
 
       - name: Build base image
         run: |
-          docker build . --file Dockerfile.base --tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+          docker build \
+            --file Dockerfile.base \
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest \
+            --cache-from=type=local,src=/tmp/.buildx-cache \
+            --cache-to=type=local,dest=/tmp/.buildx-cache
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image
 
       - name: Build frontend and backend images
         run: |
-          docker build . --file apps/client/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          docker build . --file apps/server/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
+          docker build \
+            --file apps/client/Dockerfile \
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest \
+            --cache-from=type=local,src=/tmp/.buildx-cache \
+            --cache-to=type=local,dest=/tmp/.buildx-cache
+          docker build \
+            --file apps/server/Dockerfile \
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest \
+            --cache-from=type=local,src=/tmp/.buildx-cache \
+            --cache-to=type=local,dest=/tmp/.buildx-cache
 
       - name: Docker Hub push
         run: |
