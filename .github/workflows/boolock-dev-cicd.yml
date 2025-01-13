@@ -74,12 +74,11 @@ jobs:
           script: |
             cd boolock/refactor-web31-BooLock
             git fetch origin
-            git checkout origin/refactor/13
+            git checkout refactor/13
             git pull origin refactor/13
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-            docker compose config
 
             sudo docker compose pull
             sudo docker compose down
