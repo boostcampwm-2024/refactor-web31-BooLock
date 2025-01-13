@@ -51,7 +51,9 @@ jobs:
             --cache-from=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:cache \
             --cache-to=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:cache,mode=max \
             --push .
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image
+            
+      - name: Tag Base Image Locally
+        run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image
 
       - name: Build and Push Frontend Image
         run: |
