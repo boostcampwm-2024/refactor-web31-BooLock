@@ -64,9 +64,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Docker Hub
-        run: sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-
       - name: Deploy with docker
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -77,9 +74,10 @@ jobs:
           script: |
             cd boolock/refactor-web31-BooLock
             git checkout dev
-            git pull origin dev
+            git pull dev
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
+            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
             sudo docker compose pull
             sudo docker compose down
