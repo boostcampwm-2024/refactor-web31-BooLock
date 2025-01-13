@@ -73,8 +73,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd boolock/refactor-web31-BooLock
+            git status
             git checkout dev
-            git pull dev
+            git pull origin dev
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
