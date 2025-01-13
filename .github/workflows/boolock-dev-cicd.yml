@@ -47,6 +47,7 @@ jobs:
       - name: Build base image
         run: |
           docker build . --file Dockerfile.base --tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image
 
       - name: Build frontend and backend images
         run: |
