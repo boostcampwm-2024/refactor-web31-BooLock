@@ -51,6 +51,7 @@ jobs:
             --cache-from=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:cache \
             --cache-to=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:cache,mode=max \
             --push .
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image
 
       - name: Build and Push Frontend Image
         run: |
@@ -69,7 +70,7 @@ jobs:
             --cache-from=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:cache \
             --cache-to=type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:cache,mode=max \
             --push .
-            
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
