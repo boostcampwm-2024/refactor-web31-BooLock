@@ -1,4 +1,5 @@
-FROM base-image AS backend-build
+ARG DOCKERHUB_USERNAME
+FROM ${DOCKERHUB_USERNAME}/base-image AS backend-build
 
 WORKDIR /app/apps/server
 COPY ./apps/server .
