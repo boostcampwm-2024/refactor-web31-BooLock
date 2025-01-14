@@ -26,7 +26,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-docker-${{ github.sha }}
+          key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile') }}
           restore-keys: |
             ${{ runner.os }}-docker-
 
@@ -80,8 +80,8 @@ jobs:
           file: apps/server/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
 
