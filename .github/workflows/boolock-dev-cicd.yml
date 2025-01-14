@@ -13,6 +13,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
@@ -30,51 +39,48 @@ jobs:
           echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> apps/server/.env
           echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> apps/server/.env
           echo "NODE_ENV=production" >> apps/server/.env
-
+      
       - name: Set FE .env
         run: |
           echo "VITE_SERVER_URL=${{ secrets.DEPLOY_VITE_SERVER_URL }}" > apps/client/.env
           echo "VITE_STATIC_STORAGE_URL=${{ secrets.VITE_STATIC_STORAGE_URL }}" >> apps/client/.env
-
+      
       - name: Set Nginx SSL files
         run: |
           mkdir -p apps/client/ssl
           echo "${{ secrets.SSL_FULLCHAIN }}" > apps/client/ssl/fullchain.pem
           echo "${{ secrets.SSL_PRIVKEY }}" > apps/client/ssl/privkey.pem
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
+      - name: Build and Push Base Image
+        uses: docker/build-push-action@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          context: .
+          file: Dockerfile.base
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      
 
-      - name: Build base image
-        run: |
-          docker buildx build . \
-            --file Dockerfile.base \
-            --tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest \
-            --cache-from=type=local,src=/tmp/.buildx-cache \
-            --cache-to=type=local,dest=/tmp/.buildx-cache \
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image
+      - name: Build and Push Frontend Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: apps/client/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
-      - name: Build frontend and backend images
-        run: |
-          docker buildx build . \
-            --file apps/client/Dockerfile \
-            --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest \
-            --cache-from=type=local,src=/tmp/.buildx-cache \
-            --cache-to=type=local,dest=/tmp/.buildx-cache
-          docker buildx build . \
-            --file apps/server/Dockerfile \
-            --tag ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest \
-            --cache-from=type=local,src=/tmp/.buildx-cache \
-            --cache-to=type=local,dest=/tmp/.buildx-cache
-
-      - name: Docker Hub push
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
+      - name: Build and Push Backend Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: apps/server/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
   deploy:
     needs: build
@@ -99,4 +105,3 @@ jobs:
             sudo docker compose pull
             sudo docker compose down
             sudo docker compose up -d
-            sudo docker image prune -f
