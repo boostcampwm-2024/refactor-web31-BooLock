@@ -58,8 +58,8 @@ jobs:
           file: Dockerfile.base
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
 
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
@@ -68,8 +68,8 @@ jobs:
           file: apps/client/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
 
@@ -80,8 +80,8 @@ jobs:
           file: apps/server/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
 
