@@ -76,7 +76,8 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          build-args: DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          build-args: 
+            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v4
@@ -87,7 +88,8 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
-          build-args: DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          build-args: 
+            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
   deploy:
     needs: build
