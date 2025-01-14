@@ -60,7 +60,6 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      
 
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
@@ -71,6 +70,8 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+          build-args: |
+            DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
 
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v4
@@ -81,6 +82,8 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+          build-args: |
+            DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
 
   deploy:
     needs: build
