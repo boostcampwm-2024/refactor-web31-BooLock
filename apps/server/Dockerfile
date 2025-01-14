@@ -1,4 +1,4 @@
-FROM base-image:latest AS backend-build
+FROM base-image AS backend-build
 
 WORKDIR /app/apps/server
 COPY ./apps/server .

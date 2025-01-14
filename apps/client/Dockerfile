@@ -1,4 +1,4 @@
-FROM base-image:latest AS frontend-build
+FROM base-image AS frontend-build
 
 WORKDIR /app/apps/client
 COPY ./apps/client .
