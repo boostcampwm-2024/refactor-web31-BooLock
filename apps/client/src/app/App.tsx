@@ -12,7 +12,7 @@ const HomePage = lazy(() =>
 );
 
 const WorkspacePage = lazy(() =>
-  import('@/pages/WorkspacePage/WorkspacePage').then((module) => ({
+  import('@/pages/Workspacepage/WorkspacePage').then((module) => ({
     default: module.WorkspacePage,
   }))
 );
