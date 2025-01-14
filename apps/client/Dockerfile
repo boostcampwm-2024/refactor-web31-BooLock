@@ -1,5 +1,4 @@
-ARG DOCKERHUB_USERNAME
-FROM ${DOCKERHUB_USERNAME}/base-image AS frontend-build
+FROM base-image:latest AS frontend-build
 
 WORKDIR /app/apps/client
 COPY ./apps/client .

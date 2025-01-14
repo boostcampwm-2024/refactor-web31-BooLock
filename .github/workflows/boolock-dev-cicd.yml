@@ -51,16 +51,26 @@ jobs:
           echo "${{ secrets.SSL_FULLCHAIN }}" > apps/client/ssl/fullchain.pem
           echo "${{ secrets.SSL_PRIVKEY }}" > apps/client/ssl/privkey.pem
 
-      - name: Build and Push Base Image
+      # - name: Build and Push Base Image
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: Dockerfile.base
+      #     push: true
+      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+      #     cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+      #     cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+      #     outputs: type=docker
+
+      - name: Build Base Image
         uses: docker/build-push-action@v4
         with:
           context: .
           file: Dockerfile.base
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-          outputs: type=docker
+          push: false 
+          tags: base-image:latest
+          cache-from: type=inline
+          cache-to: type=inline
 
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
@@ -71,9 +81,9 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          outputs: type=docker
-          build-args: |
-            DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          # outputs: type=docker
+          # build-args: |
+          #   DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
 
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v4
@@ -84,9 +94,9 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
-          outputs: type=docker
-          build-args: |
-            DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          # outputs: type=docker
+          # build-args: |
+          #   DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
 
   deploy:
     needs: build
