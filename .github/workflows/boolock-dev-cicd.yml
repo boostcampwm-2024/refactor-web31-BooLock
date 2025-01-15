@@ -78,7 +78,6 @@ jobs:
           push: true 
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-            base-image:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
           cache-to: |
             type=inline 
