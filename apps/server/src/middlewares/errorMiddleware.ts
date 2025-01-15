@@ -1,5 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
-import { CustomError } from '../utils/customError';
+import {
+  BadRequestError,
+  CustomError,
+  ForbiddenError,
+  UnauthorizedError,
+} from '../utils/customError';
+import { NextFunction, Request, Response } from 'express';
+
+import { NotFound } from '@aws-sdk/client-s3';
 import { errorStatus } from '../utils/constants';
 
 // eslint-disable-next-line no-unused-vars
@@ -18,5 +25,17 @@ const errorHandlers: { [key: string]: (err: any, res: Response) => void } = {
   },
   CustomError: (err: CustomError, res: Response) => {
     res.status(err.statusCode).json({ message: err.message });
+  },
+  NotFoundError: (err: NotFound, res: Response) => {
+    res.status(errorStatus.HTTP_404_NOT_FOUND).json({ message: err.message });
+  },
+  BadRequestError: (err: BadRequestError, res: Response) => {
+    res.status(errorStatus.HTTP_400_BAD_REQUEST).json({ message: err.message });
+  },
+  UnauthorizedError: (err: UnauthorizedError, res: Response) => {
+    res.status(errorStatus.HTTP_401_UNAUTHORIZED).json({ message: err.message });
+  },
+  ForbiddenError: (err: ForbiddenError, res: Response) => {
+    res.status(errorStatus.HTTP_403_FORBIDDEN).json({ message: err.message });
   },
 };
