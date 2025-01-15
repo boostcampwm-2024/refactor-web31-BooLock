@@ -83,6 +83,13 @@ jobs:
             type=inline 
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
 
+      - name: Authenticate with Docker Hub
+        run: |
+          TOKEN=$(curl -s -u "${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.DOCKERHUB_PASSWORD }}" \
+            "https://auth.docker.io/token?service=registry.docker.io&scope=repository:${{ secrets.DOCKERHUB_USERNAME }}/base-image:pull" | jq -r .token)
+          echo "Token: $TOKEN"
+          curl -H "Authorization: Bearer $TOKEN" -v https://registry-1.docker.io/v2/
+
       - name: Test Docker Hub Connectivity
         run: curl -v https://registry-1.docker.io/v2/
 
