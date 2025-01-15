@@ -6,6 +6,7 @@ import CopyIcon from '@/shared/assets/code_copy.svg?react';
 import { resetCss } from '@/shared/utils/resetCss';
 import toast from 'react-hot-toast';
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
+import { trackEvent } from '@/shared/utils';
 
 type PreviewBoxProps = {
   htmlCode: string;
@@ -27,7 +28,8 @@ export const PreviewBox = ({
   selectedBlockLength,
   selectedBlockType,
 }: PreviewBoxProps) => {
-  const [activeTab, setActiveTab] = useState<'preview' | 'html' | 'css'>('preview');
+  type TTab = 'preview' | 'html' | 'css';
+  const [activeTab, setActiveTab] = useState<TTab>('preview');
   const { isResetCssChecked } = useResetCssStore();
   const { currentStep } = useCoachMarkStore();
   const { setIframeRef } = useIframeStore();
@@ -67,6 +69,13 @@ export const PreviewBox = ({
     copyToClipboard(codeToCopy, label);
   };
 
+  const handleActiveTab = (type: TTab) => {
+    setActiveTab(type);
+    trackEvent(`preview_tab_clicked`, {
+      item: type,
+    });
+  };
+
   return (
     // TODO: 사용자가이드 - 겹치는 현상
     <section
@@ -74,21 +83,21 @@ export const PreviewBox = ({
     >
       <nav className="flex h-10 border-b border-gray-100">
         <button
-          onClick={() => setActiveTab('preview')}
+          onClick={() => handleActiveTab('preview')}
           className={`${activeTab === 'preview' ? 'bg-green-500 text-white' : 'bg-white text-gray-200'} h-full flex-1 border-r border-gray-100 bg-green-500`}
           aria-label="미리보기 탭 버튼"
         >
           미리보기
         </button>
         <button
-          onClick={() => setActiveTab('html')}
+          onClick={() => handleActiveTab('html')}
           className={`${activeTab === 'html' ? 'bg-green-500 text-white' : 'bg-white text-gray-200'} h-full flex-1 border-r border-gray-100 bg-green-500`}
           aria-label="HTML 탭 버튼"
         >
           HTML
         </button>
         <button
-          onClick={() => setActiveTab('css')}
+          onClick={() => handleActiveTab('css')}
           className={`${activeTab === 'css' ? 'bg-green-500 text-white' : 'bg-white text-gray-200'} h-full flex-1 bg-green-500`}
           aria-label="CSS 탭 버튼"
         >
