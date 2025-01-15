@@ -59,16 +59,37 @@ jobs:
       #     docker builder prune --all --force
       #     docker image prune --all --force
 
-      - name: Build and Push Base Image
+      # - name: Build and Push Base Image
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: Dockerfile.base
+      #     push: true
+      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+      #     cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
+      #     cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
+      #     outputs: type=docker
+
+      - name: Build and Save Base Image
         uses: docker/build-push-action@v4
         with:
           context: .
           file: Dockerfile.base
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+          push: true 
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
+            base-image:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
-          outputs: type=docker
+          cache-to: |
+            type=inline 
+            type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
+        continue-on-error: true
+
+      - name: Save Base Image to File
+        run: docker save base-image:latest -o base-image.tar
+
+      - name: Load Base Image from File
+        run: docker load -i base-image.tar
 
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
@@ -78,8 +99,8 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-from: |
+            type=inline
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest,mode=max
-            type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest,mode=max
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
@@ -92,8 +113,8 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-from: |
+            type=inline
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest,mode=max
-            type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest,mode=max
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
