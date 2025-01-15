@@ -83,7 +83,9 @@ jobs:
           cache-to: |
             type=inline 
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
-        continue-on-error: true
+
+      - name: Verify Base Image
+        run: docker images base-image:latest
 
       - name: Save Base Image to File
         run: docker save base-image:latest -o base-image.tar
