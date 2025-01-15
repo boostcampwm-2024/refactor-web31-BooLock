@@ -83,6 +83,9 @@ jobs:
             type=inline 
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
 
+      - name: Test Docker Hub Connectivity
+        run: curl -v https://registry-1.docker.io/v2/
+
       - name: Pull Base Image (Remote)
         run: docker pull docker.io/${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
 
