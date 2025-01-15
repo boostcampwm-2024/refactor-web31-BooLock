@@ -70,22 +70,6 @@ jobs:
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
           outputs: type=docker
 
-      # - name: Build and Push Base Image
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: .
-      #     file: Dockerfile.base
-      #     push: false 
-      #     tags: base-image
-      #     cache-to: type=inline 
-      #     outputs: type=docker 
-      
-      # - name: Verify Local Base Image
-      #   run: docker images base-image
-      
-      # - name: Load Base Image into Docker
-      #   run: docker load -i base-image
-
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
         with:
@@ -95,6 +79,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-from: |
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest,mode=max
+            type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest,mode=max
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
@@ -106,8 +91,9 @@ jobs:
           file: apps/server/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
-          cache-from: 
+          cache-from: |
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest,mode=max
+            type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest,mode=max
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
