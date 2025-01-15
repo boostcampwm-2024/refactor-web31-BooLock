@@ -32,7 +32,7 @@ export const useGetWorkspace = (workspaceId: string) => {
   });
 
   useEffect(() => {
-    if (!isError || !data || !data.workspaceDto) {
+    if (isError || !data || !data.workspaceDto) {
       return;
     }
 
