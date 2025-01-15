@@ -1,9 +1,9 @@
+import { DelayedFallback, Loading } from '@/shared/ui';
 import { ErrorPage, WorkspaceErrorPage } from '@/pages';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
 import { Helmet } from 'react-helmet-async';
-import { Loading } from '@/shared/ui';
 import { ToasterWithMax } from '@/shared/ui';
 
 // lazy 로딩
@@ -49,7 +49,13 @@ const router = createBrowserRouter([
           <meta name="description" content={`워크스페이스에서 HTML과 CSS를 연습해보세요.`} />
         </Helmet>
 
-        <Suspense fallback={<Loading />}>
+        <Suspense
+          fallback={
+            <DelayedFallback>
+              <Loading />
+            </DelayedFallback>
+          }
+        >
           <WorkspacePage />
         </Suspense>
       </>

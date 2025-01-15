@@ -1,4 +1,4 @@
-import { WorkspaceContainer, WorkspaceHeader } from '@/widgets';
+import { WorkspaceContainer, WorkspaceGrid, WorkspaceHeader } from '@/widgets';
 
 import { SkeletonWorkspaceList } from '@/shared/ui';
 import { Suspense } from 'react';
@@ -12,7 +12,13 @@ export const WorkspaceSection = () => {
   return (
     <section className="w-full max-w-[1152px] px-3 pb-48">
       <WorkspaceHeader />
-      <Suspense fallback={<SkeletonWorkspaceList skeletonNum={8} />}>
+      <Suspense
+        fallback={
+          <WorkspaceGrid>
+            <SkeletonWorkspaceList skeletonNum={8} />
+          </WorkspaceGrid>
+        }
+      >
         <WorkspaceContainer />
       </Suspense>
     </section>
