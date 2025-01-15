@@ -75,7 +75,7 @@ jobs:
           file: Dockerfile.base
           push: false 
           tags: base-image
-          cache-to: type=local,src=/var/lib/docker
+          cache-to: type=inline 
           outputs: type=docker 
       
       - name: Verify Local Base Image
