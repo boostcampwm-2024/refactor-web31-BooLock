@@ -1,5 +1,6 @@
 ARG DOCKERHUB_USERNAME
 FROM ${DOCKERHUB_USERNAME}/base-image AS frontend-build
+RUN echo "DockerHub Username: ${DOCKERHUB_USERNAME}"
 
 WORKDIR /app/apps/client
 COPY ./apps/client .
