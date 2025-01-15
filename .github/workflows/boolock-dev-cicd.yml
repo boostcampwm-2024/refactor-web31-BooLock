@@ -75,7 +75,7 @@ jobs:
           file: Dockerfile.base
           push: false 
           tags: base-image
-          cache-to: type=inline 
+          cache-to: type=local,src=/var/lib/docker
           outputs: type=docker 
       
       - name: Verify Local Base Image
@@ -89,7 +89,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-from: |
-            type=inline
+            type=local,src=/var/lib/docker
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           # build-args: |
@@ -103,7 +103,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-from: |
-            type=inline
+            type=local,src=/var/lib/docker
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           # build-args: |
