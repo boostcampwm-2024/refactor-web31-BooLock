@@ -84,7 +84,7 @@ jobs:
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
 
       - name: Pull Base Image (Remote)
-        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+        run: docker pull docker.io/${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
 
       - name: Verify Base Image
         run: docker images ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
