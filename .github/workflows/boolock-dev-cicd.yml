@@ -83,8 +83,14 @@ jobs:
             type=inline 
             type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
 
+      - name: Pull Base Image (Remote)
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+
       - name: Verify Base Image
-        run: docker images base-image:latest
+        run: docker images ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
+
+      - name: Retag Base Image Locally
+        run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest base-image:latest
 
       - name: Save Base Image to File
         run: docker save base-image:latest -o base-image.tar
