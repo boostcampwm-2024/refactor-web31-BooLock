@@ -1,7 +1,8 @@
 import { EmptyWorkspace, WorkspaceGrid, WorkspaceHeader, WorkspaceList } from '@/widgets';
-import { useGetWorkspaceList, useInfiniteScroll } from '@/shared/hooks';
+import { useGetWorkspaceList, useInfiniteScroll, useVirtualScroll } from '@/shared/hooks';
 
 import { SkeletonWorkspaceList } from '@/shared/ui';
+import { TWorkspace } from '@/shared/types';
 import { WorkspaceLoadError } from '@/entities';
 
 /**
@@ -12,6 +13,13 @@ import { WorkspaceLoadError } from '@/entities';
 export const WorkspaceContainer = () => {
   const { hasNextPage, fetchNextPage, isPending, isFetchingNextPage, isError, workspaceList } =
     useGetWorkspaceList();
+
+  const { renderedData, offsetY, totalHeight } = useVirtualScroll<TWorkspace>({
+    data: workspaceList,
+    topSectionHeight: 594,
+    renderedItemHeight: 262,
+    gapY: 32,
+  });
 
   const fetchCallback: IntersectionObserverCallback = (entries, observer) => {
     entries.forEach((entry) => {
@@ -39,10 +47,16 @@ export const WorkspaceContainer = () => {
         (workspaceList.length === 0 ? (
           <EmptyWorkspace />
         ) : (
-          <WorkspaceGrid>
-            <WorkspaceList workspaceList={workspaceList} />
-            {isFetchingNextPage && <SkeletonWorkspaceList skeletonNum={8} />}
-          </WorkspaceGrid>
+          <div
+            style={{
+              height: `${totalHeight}px`,
+            }}
+          >
+            <WorkspaceGrid offsetY={offsetY}>
+              <WorkspaceList workspaceList={renderedData} />
+              {isFetchingNextPage && <SkeletonWorkspaceList skeletonNum={8} />}
+            </WorkspaceGrid>
+          </div>
         ))
       )}
       {!isPending && !isFetchingNextPage && hasNextPage && (
