@@ -76,10 +76,10 @@ jobs:
           context: .
           file: Dockerfile.base
           push: true 
+          platform: linux/amd64 
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
-          outputs: type=oci
 
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
@@ -87,6 +87,7 @@ jobs:
           context: .
           file: apps/client/Dockerfile
           push: true
+          platform: linux/amd64 
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
           cache-from: |
             type=inline
@@ -101,6 +102,7 @@ jobs:
           context: .
           file: apps/server/Dockerfile
           push: true
+          platform: linux/amd64 
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
           cache-from: |
             type=inline
