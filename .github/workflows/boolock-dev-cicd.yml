@@ -79,6 +79,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest,mode=max
+          outputs: type=oci
 
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
