@@ -2,9 +2,7 @@ name: ci/cd action
 
 on:
   push:
-    branches: ['dev']
-  pull_request:
-    branches: ['dev']
+    branches: ['main']
 
 jobs:
   build:
@@ -100,8 +98,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd boolock/refactor-web31-BooLock
-            git checkout dev
-            git pull origin dev
+            git checkout main
+            git pull origin main
 
             echo "MONGO_URI=${{ secrets.DEPLOY_MONGO_URI }}"  > apps/server/.env
             echo "IS_LOCAL=false" >> apps/server/.env
