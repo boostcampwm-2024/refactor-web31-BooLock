@@ -28,9 +28,9 @@ jobs:
 
       - name: Set BE .env
         run: |
-          echo "MONGO_URI=${{ secrets.DEPLOY_MONGO_URI }}"  > apps/server/.env
+          echo "MONGO_URI=${{ secrets.TEST_MONGO_URI }}"  > apps/server/.env
           echo "IS_LOCAL=false" >> apps/server/.env
-          echo "SERVER_CORS_ACCEPT=${{ secrets.DEPLOY_SERVER_CORS_ACCEPT }}" >> apps/server/.env
+          echo "SERVER_CORS_ACCEPT=${{ secrets.TEST_SERVER_CORS_ACCEPT }}" >> apps/server/.env
           echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> apps/server/.env
           echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> apps/server/.env
           echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> apps/server/.env
@@ -41,12 +41,6 @@ jobs:
           echo "VITE_SERVER_URL=${{ secrets.DEPLOY_VITE_SERVER_URL }}" > apps/client/.env
           echo "VITE_MIXPANEL_TOKEN=${{ secrets.VITE_MIXPANEL_TOKEN }}" >> apps/client/.env
           echo "VITE_STATIC_STORAGE_URL=${{ secrets.VITE_STATIC_STORAGE_URL }}" >> apps/client/.env
-      
-      - name: Set Nginx SSL files
-        run: |
-          mkdir -p apps/client/ssl
-          echo "${{ secrets.SSL_FULLCHAIN }}" > apps/client/ssl/fullchain.pem
-          echo "${{ secrets.SSL_PRIVKEY }}" > apps/client/ssl/privkey.pem
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -70,7 +64,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: apps/client/Dockerfile
+          file: apps/client/Dockerfile.test
           push: true
           platform: linux/amd64 
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
@@ -97,10 +91,10 @@ jobs:
       - name: Deploy with docker
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}
+          host: ${{ secrets.TEST_SSH_HOST }}
+          username: ${{ secrets.TEST_SSH_USER }}
+          password: ${{ secrets.TEST_SSH_PASSWORD }}
+          port: ${{ secrets.TEST_SSH_PORT }}
           script: |
             cd boolock/refactor-web31-BooLock
             git fetch origin
