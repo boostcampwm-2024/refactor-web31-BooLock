@@ -1,5 +1,5 @@
 ARG DOCKERHUB_USERNAME
-FROM ${DOCKERHUB_USERNAME}/base-image AS backend-build
+FROM ${DOCKERHUB_USERNAME}/base-image AS frontend-build
 
 WORKDIR /app/apps/client
 COPY ./apps/client .
