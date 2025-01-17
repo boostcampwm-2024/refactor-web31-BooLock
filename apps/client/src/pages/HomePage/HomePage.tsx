@@ -1,4 +1,4 @@
-import { Banner, HomeHeader, WorkspaceContainer, WorkspaceModal } from '@/widgets';
+import { Banner, HomeHeader, WorkspaceModal, WorkspaceSection } from '@/widgets';
 import { useClassBlockStore, useLoadingStore, useWorkspaceStore } from '@/shared/store';
 
 import { Loading } from '@/shared/ui';
@@ -26,7 +26,7 @@ export const HomePage = () => {
       <div className="flex h-full w-full flex-col items-center">
         <HomeHeader />
         <Banner />
-        <WorkspaceContainer />
+        <WorkspaceSection />
         <WorkspaceModal />
       </div>
     </>

@@ -1,10 +1,9 @@
-import { ImageTagModal, CoachMark, WorkspaceContent, WorkspacePageHeader } from '@/widgets';
+import { CoachMark, ImageTagModal, WorkspaceContent, WorkspacePageHeader } from '@/widgets';
+import { useEffect, useLayoutEffect } from 'react';
 import { useGetWorkspace, usePreventLeaveWorkspacePage } from '@/shared/hooks';
-import { Loading } from '@/shared/ui';
-import { NotFound } from '@/pages/NotFound/NotFound';
-import { useParams } from 'react-router-dom';
-import { useLayoutEffect, useEffect } from 'react';
+
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
+import { useParams } from 'react-router-dom';
 
 /**
  *
@@ -13,7 +12,7 @@ import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
  */
 export const WorkspacePage = () => {
   const { workspaceId } = useParams();
-  const { isPending, isError } = useGetWorkspace(workspaceId as string);
+  useGetWorkspace(workspaceId as string);
   usePreventLeaveWorkspacePage();
   const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore();
   const toolboxDiv = document.querySelector('.blocklyToolboxDiv');
@@ -36,14 +35,9 @@ export const WorkspacePage = () => {
     }
   }, [currentStep, toolboxDiv]);
 
-  if (isError) {
-    return <NotFound />;
-  }
-
   return (
     <>
       <div className="flex h-screen flex-col">
-        {isPending && <Loading />}
         {isCoachMarkOpen && <CoachMark />}
         <WorkspacePageHeader />
         <WorkspaceContent />

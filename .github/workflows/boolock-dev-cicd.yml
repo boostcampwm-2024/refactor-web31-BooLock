@@ -2,9 +2,7 @@ name: ci/cd action
 
 on:
   push:
-    branches: ['dev']
-  pull_request:
-    branches: ['dev']
+    branches: ['main']
 
 jobs:
   build:
@@ -42,6 +40,7 @@ jobs:
       - name: Set FE .env
         run: |
           echo "VITE_SERVER_URL=http://localhost:3000" > apps/client/.env
+          echo "VITE_MIXPANEL_TOKEN=${{ secrets.VITE_MIXPANEL_TOKEN }}" >> apps/client/.env
           echo "VITE_STATIC_STORAGE_URL=${{ secrets.VITE_STATIC_STORAGE_URL }}" >> apps/client/.env
 
       - name: Set Nginx SSL files
@@ -98,18 +97,20 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd boolock/web31-BooLock
-            git checkout dev
-            git pull origin dev
+            cd boolock/refactor-web31-BooLock
+            git checkout main
+            git pull origin main
 
             echo "MONGO_URI=${{ secrets.DEPLOY_MONGO_URI }}"  > apps/server/.env
             echo "IS_LOCAL=false" >> apps/server/.env
-            echo "${{ secrets.DEPLOY_SERVER_CORS_ACCEPT }}" >> apps/server/.env
+            echo "SERVER_CORS_ACCEPT=${{ secrets.DEPLOY_SERVER_CORS_ACCEPT }}" >> apps/server/.env
             echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> apps/server/.env
             echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> apps/server/.env
             echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> apps/server/.env
+            echo "NODE_ENV=production" >> apps/server/.env
 
             echo "VITE_SERVER_URL=${{ secrets.DEPLOY_VITE_SERVER_URL }}" > apps/client/.env
+            echo "VITE_MIXPANEL_TOKEN=${{ secrets.VITE_MIXPANEL_TOKEN }}" >> apps/client/.env
             echo "VITE_STATIC_STORAGE_URL=${{ secrets.VITE_STATIC_STORAGE_URL }}" >> apps/client/.env
 
             sudo docker compose pull
