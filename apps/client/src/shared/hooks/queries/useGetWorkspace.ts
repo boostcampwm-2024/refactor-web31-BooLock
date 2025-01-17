@@ -3,16 +3,15 @@ import { createUserId, getUserId, removeCssClassNamePrefix } from '@/shared/util
 import {
   useClassBlockStore,
   useCssPropsStore,
+  useImageModalStore,
   useResetCssStore,
   useWorkspaceChangeStatusStore,
   useWorkspaceStore,
-  useImageModalStore,
 } from '@/shared/store';
 
 import { WorkspaceApi } from '@/shared/api';
-import toast from 'react-hot-toast';
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { workspaceKeys } from '@/shared/hooks';
 
 export const useGetWorkspace = (workspaceId: string) => {
@@ -24,29 +23,19 @@ export const useGetWorkspace = (workspaceId: string) => {
   const { resetChangedStatusState } = useWorkspaceChangeStatusStore();
   const { setIsResetCssChecked } = useResetCssStore();
   const { setInitialImageMap, setInitialImageList } = useImageModalStore();
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError } = useSuspenseQuery({
     queryKey: workspaceKeys.detail(workspaceId),
     queryFn: () => {
+      resetChangedStatusState();
       return workspaceApi.getWorkspace(userId, workspaceId);
     },
   });
 
   useEffect(() => {
-    resetChangedStatusState();
-  }, []);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error('워크스페이스 정보 불러오기 실패');
-      return;
-    }
-    if (!data) {
+    if (isError || !data || !data.workspaceDto) {
       return;
     }
 
-    if (!data.workspaceDto) {
-      return;
-    }
     setName(data.workspaceDto.name);
     Object.keys(data.workspaceDto.totalCssPropertyObj).forEach((className) => {
       createCssClassBlock(className);

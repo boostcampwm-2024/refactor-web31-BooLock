@@ -4,8 +4,9 @@ export { WorkspaceList } from './home/WorkspaceList/WorkspaceList';
 export { WorkspaceHeader } from './home/WorkspaceHeader/WorkspaceHeader';
 export { EmptyWorkspace } from './home/EmptyWorkspace/EmptyWorkspace';
 export { WorkspaceGrid } from './home/WorkspaceGrid/WorkspaceGrid';
-export { WorkspaceContainer } from './home/WorkspaceContainer/WorkspaceContainer';
+export { WorkspaceSection } from './home/WorkspaceSection/WorkspaceSection';
 export { WorkspaceModal } from './home/WorkspaceModal/WorkspaceModal';
+export { WorkspaceContainer } from './home/WorkspaceContainer/WorkspaceContainer';
 
 export { PreviewBox } from './workspace/PreviewBox/PreviewBox';
 export { CoachMark } from './workspace/CoachMark/CoachMark';

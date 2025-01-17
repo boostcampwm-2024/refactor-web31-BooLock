@@ -1,9 +1,10 @@
+import { DelayedFallback, Loading } from '@/shared/ui';
+import { ErrorPage, WorkspaceErrorPage } from '@/pages';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ToasterWithMax } from '@/shared/ui';
-import { ErrorPage } from '@/pages/ErrorPage/ErrorPage';
-import { lazy, Suspense } from 'react';
-import { Loading } from '@/shared/ui';
+import { Suspense, lazy } from 'react';
+
 import { Helmet } from 'react-helmet-async';
+import { ToasterWithMax } from '@/shared/ui';
 
 // lazy 로딩
 const HomePage = lazy(() =>
@@ -47,12 +48,19 @@ const router = createBrowserRouter([
           <title>BooLock - 작업 공간</title>
           <meta name="description" content={`워크스페이스에서 HTML과 CSS를 연습해보세요.`} />
         </Helmet>
-        <Suspense fallback={<Loading />}>
+
+        <Suspense
+          fallback={
+            <DelayedFallback>
+              <Loading />
+            </DelayedFallback>
+          }
+        >
           <WorkspacePage />
         </Suspense>
       </>
     ),
-    errorElement: <ErrorPage />,
+    errorElement: <WorkspaceErrorPage />,
   },
   {
     path: '*',
