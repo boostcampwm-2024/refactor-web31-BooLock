@@ -1,6 +1,7 @@
-import { WorkspaceApi } from '@/shared/api';
 import { createUserId, getUserId } from '@/shared/utils';
-import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { WorkspaceApi } from '@/shared/api';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { workspaceKeys } from '@/shared/hooks';
 export const useGetWorkspaceList = () => {
   const workspaceApi = WorkspaceApi();
@@ -12,7 +13,7 @@ export const useGetWorkspaceList = () => {
     isFetchingNextPage,
     isError,
     data: workspaceList,
-  } = useInfiniteQuery({
+  } = useSuspenseInfiniteQuery({
     queryKey: workspaceKeys.list(),
     queryFn: async ({ pageParam }) => {
       const isNewUser = !getUserId();
