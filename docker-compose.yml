@@ -4,7 +4,7 @@ services:
     pull_policy: always
     ports:
       - '80:80'
-      - '443:443'
+      - "${TYPE:-} == 'prod' ? '443:443' : ''"
 
   backend:
     image: ${DOCKERHUB_USERNAME}/boolock_server_${TYPE}:latest
