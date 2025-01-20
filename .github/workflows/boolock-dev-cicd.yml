@@ -103,5 +103,4 @@ jobs:
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
             sudo docker compose pull
-            sudo docker compose pull
             sudo docker compose up -d --force-recreate --remove-orphans
