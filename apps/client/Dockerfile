@@ -1,5 +1,5 @@
-ARG DOCKERHUB_USERNAME
-FROM ${DOCKERHUB_USERNAME}/base-image AS frontend-build
+ARG DOCKERHUB_USERNAME, TYPE
+FROM ${DOCKERHUB_USERNAME}/base-image-${TYPE} AS frontend-build
 
 WORKDIR /app/apps/client
 COPY ./apps/client .

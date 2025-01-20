@@ -46,9 +46,9 @@ jobs:
           context: .
           file: Dockerfile.base
           push: true 
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image:latest
-          cache-from: type=gha,scope=base-image
-          cache-to: type=gha,mode=max,scope=base-image
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/base-image-test:latest
+          cache-from: type=gha,scope=base-image-test
+          cache-to: type=gha,mode=max,scope=base-image-test
 
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
@@ -57,10 +57,11 @@ jobs:
           file: apps/client/Dockerfile.test
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_client_test:latest
-          cache-from: type=gha,scope=frontend
-          cache-to: type=gha,mode=max,scope=frontend
+          cache-from: type=gha,scope=frontend-test
+          cache-to: type=gha,mode=max,scope=frontend-test
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+            TYPE=test
 
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v4
@@ -69,10 +70,11 @@ jobs:
           file: apps/server/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/boolock_server_test:latest
-          cache-from: type=gha,scope=backend
-          cache-to: type=gha,mode=max,scope=backend
+          cache-from: type=gha,scope=backend-test
+          cache-to: type=gha,mode=max,scope=backend-test
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+            TYPE=test
 
   deploy:
     if: github.event_name == 'push'
@@ -89,12 +91,12 @@ jobs:
           script: |
             cd boolock/refactor-web31-BooLock
             git fetch origin
-            git checkout refactor/13
-            git pull origin refactor/13
+            git checkout dev
+            git pull origin dev
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
+            echo "TYPE=test" >> .env
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-            echo "MONGO_URI=${{ secrets.TEST_MONGO_URI }}"  > apps/server/.env
 
             sudo docker compose pull
             sudo docker compose up -d --force-recreate --remove-orphans

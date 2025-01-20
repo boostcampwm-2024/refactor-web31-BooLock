@@ -1,13 +1,13 @@
 services:
   frontend:
-    image: ${DOCKERHUB_USERNAME}/boolock_client_test:latest
+    image: ${DOCKERHUB_USERNAME}/boolock_client_${TYPE}:latest
     pull_policy: always
     ports:
       - '80:80'
       - '443:443'
 
   backend:
-    image: ${DOCKERHUB_USERNAME}/boolock_server_test:latest
+    image: ${DOCKERHUB_USERNAME}/boolock_server_${TYPE}:latest
     pull_policy: always
     ports:
       - '3000:3000'
