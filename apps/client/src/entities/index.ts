@@ -19,3 +19,4 @@ export { ImageTagModalImg } from './workspace/ImageTagModalImg/ImageTagModalImg'
 export { ImageTagModalButton } from './workspace/ImageTagModalButton/ImageTagModalButton';
 export { ImageTagModalListItem } from './workspace/ImageTagModalListItem/ImageTagModalListItem';
 export { CodeExportButton } from './workspace/CodeExportButton/CodeExportButton';
+export { HelpButton } from './workspace/HelpButton/Helpbutton';
