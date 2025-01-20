@@ -18,13 +18,13 @@ jobs:
         with:
           buildkitd-flags: --debug
       
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile', 'Dockerfile.base', 'docker-compose.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-docker-
+      # - name: Cache Docker layers
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /tmp/.buildx-cache
+      #     key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile', 'Dockerfile.base', 'docker-compose.yml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-docker-
 
       - name: Set BE .env
         run: |
