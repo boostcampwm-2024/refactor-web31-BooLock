@@ -96,7 +96,7 @@ jobs:
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
             echo "TYPE=test" >> .env
-            echo "SSL_PORT=#" >> .env
+            echo "SSL_PORT=" >> .env
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
             sudo docker compose pull
