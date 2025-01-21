@@ -77,7 +77,7 @@ jobs:
             TYPE=test
 
   deploy:
-    if: github.event_name == 'push'
+    # if: github.event_name == 'push'
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -96,6 +96,7 @@ jobs:
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
             echo "TYPE=test" >> .env
+            echo "SSL_PORT=" >> .env
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
             sudo docker compose pull
