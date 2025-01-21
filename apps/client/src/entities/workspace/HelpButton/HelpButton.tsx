@@ -1,8 +1,13 @@
 import Question from '@/shared/assets/question.svg?react';
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
+import { useShallow } from 'zustand/react/shallow';
 
 export const HelpButton = () => {
-  const { openCoachMark } = useCoachMarkStore();
+  const { openCoachMark } = useCoachMarkStore(
+    useShallow((state) => ({
+      openCoachMark: state.openCoachMark,
+    }))
+  );
 
   return (
     <button
