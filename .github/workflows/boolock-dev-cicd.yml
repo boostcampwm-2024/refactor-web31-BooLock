@@ -95,8 +95,7 @@ jobs:
             git pull origin dev
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
-            echo "TYPE=test" >> .env
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
-            sudo docker compose pull
-            sudo docker compose up -d --force-recreate --remove-orphans
+            sudo docker compose -f docker-compose.test.yml pull
+            sudo docker compose -f docker-compose.test.yml up -d --force-recreate --remove-orphans
