@@ -46,7 +46,7 @@ export const WorkspacePage = () => {
     <>
       <div className="flex h-screen flex-col">
         {isCoachMarkOpen && <CoachMark />}
-        <WorkspacePageHeader />
+        <WorkspacePageHeader currentStep={currentStep} />
         <WorkspaceContent />
       </div>
       <ImageTagModal />
