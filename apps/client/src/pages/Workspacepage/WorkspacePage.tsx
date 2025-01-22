@@ -11,8 +11,8 @@ import { useParams } from 'react-router-dom';
  * 워크스페이스 페이지 컴포넌트
  */
 export const WorkspacePage = () => {
-  const { workspaceId } = useParams();
-  useGetWorkspace(workspaceId as string);
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  useGetWorkspace(workspaceId!);
   usePreventLeaveWorkspacePage();
   const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore();
   const toolboxDiv = document.querySelector('.blocklyToolboxDiv');
