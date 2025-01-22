@@ -1,21 +1,27 @@
-import { useCssTooltipStore } from '@/shared/store';
-import { useEffect } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
+
 import { useWindowSize } from '@/shared/hooks';
 
-export const useCssTooltip = () => {
-  const { leftX, topY, offsetX, offsetY, setLeftX, setTopY } = useCssTooltipStore();
+export const useCssTooltip = (leftX: number, topY: number) => {
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const [tooltipHeight, setTooltipHeight] = useState<number>(0);
+  const { screenHeight } = useWindowSize();
 
-  const { screenWidth, screenHeight } = useWindowSize();
-
-  useEffect(() => {
-    const tooltipHeight = 40;
-    setLeftX(offsetX);
-    if (offsetY + tooltipHeight > screenHeight) {
-      setTopY(-offsetY + tooltipHeight); // 높이를 벗어나는 것임
-    } else {
-      setTopY(offsetY);
+  useLayoutEffect(() => {
+    if (tooltipRef.current) {
+      setTooltipHeight(tooltipRef.current.getBoundingClientRect().height);
     }
-  }, [offsetX, offsetY, screenWidth, screenHeight]);
+    return () => setTooltipHeight(0);
+  }, [tooltipRef.current]);
 
-  return { leftX, topY };
+  let tooltipX = leftX;
+  let tooltipY = 0;
+
+  if (topY + tooltipHeight > screenHeight) {
+    tooltipY = -topY + tooltipHeight;
+  } else {
+    tooltipY = topY;
+  }
+
+  return { tooltipX, tooltipY, tooltipRef };
 };

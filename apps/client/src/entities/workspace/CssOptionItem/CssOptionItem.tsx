@@ -1,5 +1,5 @@
 import { Select, SelectSize } from '@/shared/ui';
-import { useCssOptionItem, useCssOptions, useCssTooltip } from '@/shared/hooks';
+import { useCssOptionItem, useCssOptions } from '@/shared/hooks';
 
 import { CssTooltip } from '@/entities';
 import Question from '@/shared/assets/question.svg?react';
@@ -31,9 +31,9 @@ export const CssOptionItem = ({ cssItem, index }: CssOptionItemProps) => {
     handleEnterKey,
     handleMouseLeave,
     handleChangeInputValue,
+    offsetX,
+    offsetY,
   } = useCssOptionItem(cssItem);
-
-  const { leftX, topY } = useCssTooltip();
 
   return (
     <div
@@ -61,12 +61,9 @@ export const CssOptionItem = ({ cssItem, index }: CssOptionItemProps) => {
             onMouseEnter={(e) => handleMouseEnter(e, index)}
             onMouseLeave={handleMouseLeave}
           />
-          <CssTooltip
-            description={cssItem.description}
-            isOpen={isHover && indexOfHover === index}
-            leftX={leftX}
-            topY={topY}
-          />
+          {isHover && indexOfHover === index && (
+            <CssTooltip description={cssItem.description} leftX={offsetX} topY={offsetY} />
+          )}
         </div>
       </div>
       {cssItem.type === 'select' && (
