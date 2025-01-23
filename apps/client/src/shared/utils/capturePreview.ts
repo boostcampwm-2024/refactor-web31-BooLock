@@ -25,7 +25,6 @@ export const capturePreview = async () => {
     height: 600,
     ignoreElements: (element) => {
       if (!element || !element.getBoundingClientRect) return true;
-      console.log(element);
       const rect = element.getBoundingClientRect();
 
       return rect.y - previewY > 600;
