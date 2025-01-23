@@ -23,7 +23,7 @@ export const useGetWorkspace = (workspaceId: string) => {
   const { resetChangedStatusState } = useWorkspaceChangeStatusStore();
   const { setIsResetCssChecked } = useResetCssStore();
   const { setInitialImageMap, setInitialImageList } = useImageModalStore();
-  const { data, isPending, isError } = useSuspenseQuery({
+  const { data, isError } = useSuspenseQuery({
     queryKey: workspaceKeys.detail(workspaceId),
     queryFn: () => {
       resetChangedStatusState();
@@ -55,5 +55,4 @@ export const useGetWorkspace = (workspaceId: string) => {
     setInitialImageMap(data.workspaceDto.imageMap);
     setInitialImageList(data.workspaceDto.imageList);
   }, [isError, data]);
-  return { data, isPending, isError };
 };
