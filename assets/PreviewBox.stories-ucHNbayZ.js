@@ -1,4 +1,4 @@
-import{j as e}from"./jsx-runtime-DR9Q75dM.js";import{P as s}from"./PreviewBox-VpyyY9VW.js";import"./index-DRjF_FHU.js";import"./mixpanel-BYnboQeE.js";import"./react-72mb-naO.js";import"./CodeViewer-CBu4ym_t.js";import"./CodeContent-TT6WBMFj.js";import"./CodeViewer.module-CZ8GGqUa.js";import"./LineNumbers-Brz8uVeN.js";import"./useCoachMarkStore-Bn0-Ay5q.js";import"./index-D1AAVYfs.js";const v={title:"widgets/workspace/PreviewBox",component:s,parameters:{layout:"centered"},decorators:[n=>e.jsx("div",{style:{width:"500px",height:"100%"},children:e.jsx(n,{})})],tags:["autodocs"]},o={args:{htmlCode:`<html>
+import{j as e}from"./jsx-runtime-DR9Q75dM.js";import{P as s}from"./PreviewBox-Bvn_0S72.js";import"./index-DRjF_FHU.js";import"./mixpanel-BYnboQeE.js";import"./react-72mb-naO.js";import"./CodeViewer-dG1omHtV.js";import"./LineNumbers-B_2_ToYE.js";import"./useCoachMarkStore-Bn0-Ay5q.js";import"./index-D1AAVYfs.js";const g={title:"widgets/workspace/PreviewBox",component:s,parameters:{layout:"centered"},decorators:[n=>e.jsx("div",{style:{width:"500px",height:"100%"},children:e.jsx(n,{})})],tags:["autodocs"]},o={args:{htmlCode:`<html>
       <head></head>
       <body>
         <div class="container">
@@ -33,4 +33,4 @@ import{j as e}from"./jsx-runtime-DR9Q75dM.js";import{P as s}from"./PreviewBox-Vp
     }
     \`
   }
-}`,...(a=(r=o.parameters)==null?void 0:r.docs)==null?void 0:a.source}}};const w=["Default"];export{o as Default,w as __namedExportsOrder,v as default};
+}`,...(a=(r=o.parameters)==null?void 0:r.docs)==null?void 0:a.source}}};const x=["Default"];export{o as Default,x as __namedExportsOrder,g as default};

@@ -1,4 +1,4 @@
-import{C as f}from"./CodeViewer-CBu4ym_t.js";import"./jsx-runtime-DR9Q75dM.js";import"./index-DRjF_FHU.js";import"./CodeContent-TT6WBMFj.js";import"./CodeViewer.module-CZ8GGqUa.js";import"./LineNumbers-Brz8uVeN.js";import"./useCoachMarkStore-Bn0-Ay5q.js";import"./react-72mb-naO.js";const D={title:"shared/code-highlighter/CodeViewer",component:f,parameters:{layout:"fullscreen"},tags:["autodocs"]},e={args:{code:`<html>
+import{C as f}from"./CodeViewer-dG1omHtV.js";import"./jsx-runtime-DR9Q75dM.js";import"./index-DRjF_FHU.js";import"./LineNumbers-B_2_ToYE.js";import"./useCoachMarkStore-Bn0-Ay5q.js";import"./react-72mb-naO.js";const w={title:"shared/code-highlighter/CodeViewer",component:f,parameters:{layout:"fullscreen"},tags:["autodocs"]},e={args:{code:`<html>
     <head></head>
     <body>
       <div>
@@ -90,4 +90,4 @@ import{C as f}from"./CodeViewer-CBu4ym_t.js";import"./jsx-runtime-DR9Q75dM.js";i
     type: 'css',
     theme: 'dark'
   }
-}`,...(u=(g=n.parameters)==null?void 0:g.docs)==null?void 0:u.source}}};const z=["Default","DarkThemeHTML","LightThemeCss","DarkThemeCss"];export{n as DarkThemeCss,t as DarkThemeHTML,e as Default,o as LightThemeCss,z as __namedExportsOrder,D as default};
+}`,...(u=(g=n.parameters)==null?void 0:g.docs)==null?void 0:u.source}}};const x=["Default","DarkThemeHTML","LightThemeCss","DarkThemeCss"];export{n as DarkThemeCss,t as DarkThemeHTML,e as Default,o as LightThemeCss,x as __namedExportsOrder,w as default};
