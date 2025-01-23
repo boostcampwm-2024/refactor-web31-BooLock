@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-
 import styles from '../../styles/CodeViewer.module.css';
+import { useDiffCodeAnimate } from '../../hooks/useDiffCodeAnimate';
 
 type CodeViewerProps = {
   code: string;
@@ -22,28 +21,8 @@ export const CodeContent = ({
   selectedBlockLength,
   selectedBlockType,
 }: CodeViewerProps) => {
-  const [previousCodeLines, setPreviousCodeLines] = useState<string[]>([]);
-  const [highlightedLines, setHighlightedLines] = useState<number[]>([]);
-
   // 코드 애니메이션 효과
-  useEffect(() => {
-    const newLineList: number[] = [];
-
-    codeLineList.forEach((line, index) => {
-      if (!previousCodeLines[index] || previousCodeLines[index] !== line) {
-        newLineList.push(index);
-      }
-    });
-
-    setHighlightedLines(newLineList);
-
-    // 애니메이션이 끝난 후 강조 제거
-    const timeout = setTimeout(() => setHighlightedLines([]), 1000);
-
-    setPreviousCodeLines(codeLineList);
-
-    return () => clearTimeout(timeout);
-  }, [code]);
+  const highlightedLines = useDiffCodeAnimate(code, codeLineList);
 
   return (
     <div className={styles.codeContent}>
