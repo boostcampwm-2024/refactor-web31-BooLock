@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { ANIMATION_DURATION_MS } from '../constants/animation';
+
 /**
  *
  * @description
@@ -19,7 +21,7 @@ export const useDiffCodeAnimate = (code: string, codeLineList: string[]) => {
     });
 
     setHighlightedLines(newLineList);
-    const timeout = setTimeout(() => setHighlightedLines([]), 1000);
+    const timeout = setTimeout(() => setHighlightedLines([]), ANIMATION_DURATION_MS);
     setPreviousCodeLines(codeLineList);
 
     return () => clearTimeout(timeout);
