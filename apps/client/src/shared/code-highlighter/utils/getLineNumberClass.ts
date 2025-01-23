@@ -1,7 +1,7 @@
 /**
  *
  * @description
- * 라인의 클래스명을 할당하는 함수
+ * 각 라인넘버에 클래스명을 할당하는 함수
  */
 export const getLineNumberClass = (
   baseClass: string,

@@ -1,10 +1,7 @@
 import styles from '../../styles/CodeViewer.module.css';
-import { useHoverLineNumber } from '../../hooks/useHoverLineNumber';
-import { getLineNumberClass } from '../../utils/getLineNumberClass';
-
-type LineNumbersProps = {
-  codeLineList: string[];
-};
+import { useHoverLineNumber } from '../../hooks';
+import { getLineNumberClass } from '../../utils';
+import { LineNumbersProps } from '../../types';
 
 /**
  *

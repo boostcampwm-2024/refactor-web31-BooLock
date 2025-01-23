@@ -1,19 +1,9 @@
 import styles from '../../styles/CodeViewer.module.css';
-import { useDiffCodeAnimate } from '../../hooks/useDiffCodeAnimate';
-import { LineNumbers } from '../LineNumbers/LineNumbers';
-import { getParsedCodeLineList } from '../../utils/getParsedCodeLineList';
-import { getClassNames } from '../../utils/getClassNames';
-import { getViewerClassNames } from '../../utils/getViewerClassNames';
+import { LineNumbers } from '../../components';
+import { useDiffCodeAnimate } from '../../hooks';
+import { getParsedCodeLineList, getClassNames, getViewerClassNames } from '../../utils';
+import { CodeViewerProps } from '../../types';
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
-
-type CodeViewerProps = {
-  code: string;
-  type: 'html' | 'css';
-  theme?: 'light' | 'dark';
-  selectedBlockStartLine?: number;
-  selectedBlockLength?: number;
-  selectedBlockType?: string | null;
-};
 
 /**
  *
@@ -28,24 +18,12 @@ export const CodeViewer = ({
   selectedBlockLength,
   selectedBlockType,
 }: CodeViewerProps) => {
-  const codeLineList = getParsedCodeLineList(code, type, styles, selectedBlockType);
-  const highlightedLines = useDiffCodeAnimate(code, codeLineList);
+  const codeLineList = getParsedCodeLineList({ code, type, styles, selectedBlockType });
+  const highlightedLines = useDiffCodeAnimate({ code, codeLineList });
   const { currentStep } = useCoachMarkStore();
 
-  const getLineClassNames = (line: string, index: number) => {
-    return getClassNames(
-      styles,
-      index,
-      line,
-      highlightedLines,
-      selectedBlockStartLine,
-      selectedBlockLength,
-      selectedBlockType
-    );
-  };
-
   return (
-    <div className={getViewerClassNames(styles, theme, currentStep)}>
+    <div className={getViewerClassNames({ styles, theme, currentStep })}>
       <div className={styles.scrollContainer}>
         <LineNumbers codeLineList={codeLineList} />
 
@@ -55,7 +33,15 @@ export const CodeViewer = ({
               return (
                 <div
                   key={index}
-                  className={getLineClassNames(line, index)}
+                  className={getClassNames({
+                    styles,
+                    index,
+                    line,
+                    highlightedLines,
+                    selectedBlockStartLine,
+                    selectedBlockLength,
+                    selectedBlockType,
+                  })}
                   dangerouslySetInnerHTML={{ __html: line }}
                 />
               );

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { ANIMATION_DURATION_MS } from '../constants/animation';
+import { ANIMATION_DURATION_MS } from '../constants';
+import { useDiffCodeAnimateProps } from '../types';
 
 /**
  *
  * @description
  * 변환된 HTML 코드에서 바뀐 코드 라인을 애니메이션 주면서 할당
  */
-export const useDiffCodeAnimate = (code: string, codeLineList: string[]) => {
+export const useDiffCodeAnimate = ({ code, codeLineList }: useDiffCodeAnimateProps) => {
   const [previousCodeLines, setPreviousCodeLines] = useState<string[]>([]);
   const [highlightedLines, setHighlightedLines] = useState<number[]>([]);
 

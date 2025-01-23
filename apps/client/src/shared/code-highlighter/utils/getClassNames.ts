@@ -1,17 +1,19 @@
+import { getClassNamesProps } from '../types';
+
 /**
  *
  * @description
  * 클래스명을 할당하는 함수
  */
-export const getClassNames = (
-  styles: { [key: string]: string },
-  index: number,
-  line: string,
-  highlightedLines: number[],
-  selectedBlockStartLine?: number,
-  selectedBlockLength?: number,
-  selectedBlockType?: string | null
-): string => {
+export const getClassNames = ({
+  styles,
+  index,
+  line,
+  highlightedLines,
+  selectedBlockStartLine,
+  selectedBlockLength,
+  selectedBlockType,
+}: getClassNamesProps): string => {
   const isHighlighted = highlightedLines.includes(index) ? styles.newLine : '';
   const isInSelectedBlock =
     selectedBlockStartLine &&
