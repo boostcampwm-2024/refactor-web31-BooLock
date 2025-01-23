@@ -1,20 +1,10 @@
+import { SelectSize, TOption } from '@/shared/types';
 import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { useWindowSize } from '@/shared/hooks';
+
 import ArrowDown from '@/shared/assets/arrow_down.svg?react';
 import ArrowUp from '@/shared/assets/arrow_up.svg?react';
-
-export enum SelectSize {
-  // eslint-disable-next-line no-unused-vars
-  SMALL = 'SMALL',
-  // eslint-disable-next-line no-unused-vars
-  MEDIUM = 'MEDIUM',
-}
-
-export type TOption = {
-  value: string;
-  label: string;
-};
+import { createPortal } from 'react-dom';
+import { useWindowSize } from '@/shared/hooks';
 
 interface SelectProps {
   id?: string;

@@ -14,5 +14,4 @@ export { DelayedFallback } from './loading/DelayedFallback';
 export { SkeletonWorkspace } from './skeleton/SkeletonWorkspace';
 export { SkeletonWorkspaceList } from './skeleton/SkeletonWorkspaceList';
 
-export { Select, SelectSize } from './select/Select';
-export type { TOption } from './select/Select';
+export { Select } from './select/Select';
