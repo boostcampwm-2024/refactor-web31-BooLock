@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const Banner = () => {
+  const { t } = useTranslation('home');
+
   return (
     <div className="relative flex h-[30rem] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-blue-500 to-green-500">
       <BackgroundGraphic />
@@ -12,7 +15,7 @@ export const Banner = () => {
               animation: 'fadeIn 1s ease-out forwards',
             }}
           >
-            블록으로 시작하는 웹 개발 첫 걸음
+            {t('banner.subtitle')}
           </h2>
           <h1
             className="text-center text-5xl font-bold leading-[1.33] text-white opacity-0"
@@ -20,8 +23,7 @@ export const Banner = () => {
               animation: '1s fadeIn .4s ease-out forwards',
             }}
           >
-            BooLock과 함께하는
-            <br /> 정적 웹 개발 학습하기
+            {t('banner.title')}
           </h1>
         </div>
       </div>

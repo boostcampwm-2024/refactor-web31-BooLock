@@ -1,6 +1,7 @@
 import { useCreateWorkspace } from '@/shared/hooks';
 import { useLoadingStore } from '@/shared/store';
 import { Spinner } from '@/shared/ui';
+import { useTranslation } from 'react-i18next';
 
 /**
  *
@@ -10,6 +11,7 @@ import { Spinner } from '@/shared/ui';
 export const WorkspaceSampleButton = () => {
   const { mutate: createWorkspace } = useCreateWorkspace(true);
   const { isPending } = useLoadingStore();
+  const { t } = useTranslation('home');
 
   const handleClick = () => {
     createWorkspace();
@@ -25,7 +27,7 @@ export const WorkspaceSampleButton = () => {
       {isPending ? (
         <Spinner width={4} height={4} backgroundColor="gray200" foregroundColor="grayWhite" />
       ) : (
-        <p>예시 불러오기</p>
+        <p>{t('section.sampleButton')}</p>
       )}
     </button>
   );

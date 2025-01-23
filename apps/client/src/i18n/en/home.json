@@ -1,0 +1,15 @@
+{
+  "banner": {
+    "title": "Learn Static Web Development with BooLock",
+    "subtitle": "Start Web Development with Blocks"
+  },
+  "section": {
+    "header": "Workspace",
+    "sampleButton": "Load Sample"
+  },
+  "workspaceModal": {
+    "confirmButton": "Delete",
+    "cancelButton": "Cancel",
+    "modalContent": "Are you sure want to delete this {{workspaceTitle}}?"
+  }
+}

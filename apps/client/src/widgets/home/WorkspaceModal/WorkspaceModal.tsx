@@ -2,6 +2,7 @@ import { ModalConfirm, Spinner, SquareButton } from '@/shared/ui';
 
 import { TButtonContent } from '@/shared/types';
 import { useModalStore } from '@/shared/store/useModalStore';
+import { useTranslation } from 'react-i18next';
 
 /**
  *
@@ -9,6 +10,8 @@ import { useModalStore } from '@/shared/store/useModalStore';
  * 워크스페이스 삭제 모달 컴포넌트
  */
 export const WorkspaceModal = () => {
+  const { t } = useTranslation('home');
+
   const {
     isModalOpen: isOpen,
     modalContent,
@@ -18,8 +21,13 @@ export const WorkspaceModal = () => {
   } = useModalStore();
 
   const buttonContents: TButtonContent[] = [
-    { name: '아차차~', func: handleModalCloseButton, type: 'neutral' },
-    { name: '지울래요', func: handleModalConfirmButton, type: 'danger', isDisabled: isLoading },
+    { name: t('workspaceModal.cancelButton'), func: handleModalCloseButton, type: 'neutral' },
+    {
+      name: t('workspaceModal.confirmButton'),
+      func: handleModalConfirmButton,
+      type: 'danger',
+      isDisabled: isLoading,
+    },
   ];
 
   return (

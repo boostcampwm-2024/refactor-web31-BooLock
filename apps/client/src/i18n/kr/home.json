@@ -1,0 +1,15 @@
+{
+  "banner": {
+    "title": "BooLock과 함께하는 <br/> 정적 웹 개발 학습하기",
+    "subtitle": "블록으로 시작하는 웹 개발 첫 걸음"
+  },
+  "section": {
+    "header": "워크스페이스",
+    "sampleButton": "예시 불러오기"
+  },
+  "workspaceModal": {
+    "confirmButton": "지울래요",
+    "cancelButton": "아차차~",
+    "modalContent": "{{workspaceTitle}}을(를) 삭제하겠습니까?"
+  }
+}
