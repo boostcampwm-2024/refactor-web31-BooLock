@@ -21,7 +21,7 @@ export const CodeContent = ({
   selectedBlockLength,
   selectedBlockType,
 }: CodeViewerProps) => {
-  // 코드 애니메이션 효과
+  // 바뀐 코드 라인 애니메이션 주면서 할당
   const highlightedLines = useDiffCodeAnimate(code, codeLineList);
 
   return (

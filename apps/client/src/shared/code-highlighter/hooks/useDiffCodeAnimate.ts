@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 
+/**
+ *
+ * @description
+ * 변환된 HTML 코드에서 바뀐 코드 라인을 애니메이션 주면서 할당
+ */
 export const useDiffCodeAnimate = (code: string, codeLineList: string[]) => {
   const [previousCodeLines, setPreviousCodeLines] = useState<string[]>([]);
   const [highlightedLines, setHighlightedLines] = useState<number[]>([]);
 
-  // 코드 애니메이션 효과
   useEffect(() => {
     const newLineList: number[] = [];
 
@@ -15,10 +19,7 @@ export const useDiffCodeAnimate = (code: string, codeLineList: string[]) => {
     });
 
     setHighlightedLines(newLineList);
-
-    // 애니메이션이 끝난 후 강조 제거
     const timeout = setTimeout(() => setHighlightedLines([]), 1000);
-
     setPreviousCodeLines(codeLineList);
 
     return () => clearTimeout(timeout);
