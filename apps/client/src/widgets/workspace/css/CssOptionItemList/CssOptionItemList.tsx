@@ -8,7 +8,7 @@ import { useCssPropsStore } from '@/shared/store';
  * CSS 속성을 설정할 수 있는 컴포넌트의 목록을 보여주는 컴포넌트
  */
 export const CssOptionItemList = () => {
-  const { selectedCssCategory } = useCssPropsStore();
+  const selectedCssCategory = useCssPropsStore((state) => state.selectedCssCategory);
 
   return (
     <article className="flex h-full w-full flex-col gap-4 overflow-y-auto p-3">

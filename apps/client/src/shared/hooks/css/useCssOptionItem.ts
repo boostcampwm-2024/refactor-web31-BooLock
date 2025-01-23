@@ -6,7 +6,9 @@ import { useCssPropsStore } from '@/shared/store';
 
 export const useCssOptionItem = (cssItem: TCssCategoryItem) => {
   const { handleCssOptionChange } = useCssOptions();
-  const { currentCssClassName, totalCssPropertyObj, selectedCssCategory } = useCssPropsStore();
+  const currentCssClassName = useCssPropsStore((state) => state.currentCssClassName);
+  const totalCssPropertyObj = useCssPropsStore((state) => state.totalCssPropertyObj);
+  const selectedCssCategory = useCssPropsStore((state) => state.selectedCssCategory);
 
   const [cssOptionValue, setCssOptionValue] = useState<string>('');
   const [isHover, setIsHover] = useState<boolean>(false);

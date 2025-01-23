@@ -17,6 +17,7 @@ import {
   removeBlockIdFromCode,
   tabToolboxConfig,
 } from '@/shared/blockly';
+import { removeCssClassNamePrefix, trackEvent } from '@/shared/utils';
 import {
   useClassBlockStore,
   useCssPropsStore,
@@ -31,7 +32,6 @@ import FixedFlyout from '@/core/fixedFlyout';
 import TabbedToolbox from '@/core/tabbedToolbox';
 import { customTooltip } from '@/core/customTooltip';
 import { registerCustomComponents } from '@/core/register';
-import { removeCssClassNamePrefix, trackEvent } from '@/shared/utils';
 
 for (const blockType in Blockly.Blocks) {
   if (Object.prototype.hasOwnProperty.call(Blockly.Blocks, blockType)) {
@@ -68,10 +68,10 @@ Blockly.WorkspaceSvg.prototype.addTrashcan = function () {
 export const WorkspaceContent = () => {
   const [htmlCode, setHtmlCode] = useState<string>('');
   const [cssCode, setCssCode] = useState<string>('');
-  const { totalCssPropertyObj } = useCssPropsStore();
+  const totalCssPropertyObj = useCssPropsStore((state) => state.totalCssPropertyObj);
+  const setCurrentCssClassName = useCssPropsStore((state) => state.setCurrentCssClassName);
   const { workspace, setWorkspace, canvasInfo } = useWorkspaceStore();
   const { setIsBlockChanged } = useWorkspaceChangeStatusStore();
-  const { setCurrentCssClassName } = useCssPropsStore();
   const { findClassBlock } = useClassBlockStore();
   const [selectedBlockStartLine, setSelectedBlockStartLine] = useState<number>(0);
   const [selectedBlockLength, setSelectedBlockLength] = useState<number>(0);

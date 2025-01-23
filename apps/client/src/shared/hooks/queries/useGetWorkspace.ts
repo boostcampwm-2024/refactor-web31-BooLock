@@ -17,7 +17,7 @@ import { workspaceKeys } from '@/shared/hooks';
 export const useGetWorkspace = (workspaceId: string) => {
   const workspaceApi = WorkspaceApi();
   const userId = getUserId() || createUserId();
-  const { initCssPropertyObj } = useCssPropsStore();
+  const initCssPropertyObj = useCssPropsStore((state) => state.initCssPropertyObj);
   const { initClassBlockList } = useClassBlockStore();
   const { setCanvasInfo, setName } = useWorkspaceStore();
   const { resetChangedStatusState } = useWorkspaceChangeStatusStore();

@@ -10,6 +10,7 @@ export { useDeleteImage } from './queries/useDeleteImage';
 export { useCssTooltip } from './css/useCssTooltip';
 export { useCssOptions } from './css/useCssOptions';
 export { useCssOptionItem } from './css/useCssOptionItem';
+export { useCssClassList } from './css/useCssClassList';
 
 export { workspaceKeys } from './query-key/workspaceKeys';
 
