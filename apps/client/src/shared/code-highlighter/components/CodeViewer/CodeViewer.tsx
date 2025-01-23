@@ -1,7 +1,6 @@
 import { CodeContent } from '../CodeContent/CodeContent';
 import { LineNumbers } from '../LineNumbers/LineNumbers';
-import { parseHighlightCss } from '../../utils/parseHighlightCss';
-import { parseHighlightHtml } from '../../utils/parseHighlightHtml';
+import { getParsedCodeLineList } from '../../utils/getParsedCodeLineList';
 import styles from '../../styles/CodeViewer.module.css';
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
 
@@ -27,11 +26,7 @@ export const CodeViewer = ({
   selectedBlockLength,
   selectedBlockType,
 }: CodeViewerProps) => {
-  const parsedCode =
-    type === 'html'
-      ? parseHighlightHtml(code, styles, selectedBlockType!)
-      : parseHighlightCss(code, styles, selectedBlockType!);
-  const codeLineList = parsedCode.split('\n').filter((line) => line.trim() !== '');
+  const codeLineList = getParsedCodeLineList(code, type, styles, selectedBlockType);
   const { currentStep } = useCoachMarkStore();
 
   return (

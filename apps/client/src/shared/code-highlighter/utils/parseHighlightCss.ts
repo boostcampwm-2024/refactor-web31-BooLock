@@ -1,3 +1,8 @@
+/**
+ *
+ * @description
+ * 주어진 CSS 코드에 하이라이트 스타일을 적용하여 변환
+ */
 export const parseHighlightCss = (
   css: string,
   styles: Record<string, string>,
