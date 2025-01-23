@@ -3,6 +3,7 @@ import { useDiffCodeAnimate } from '../../hooks/useDiffCodeAnimate';
 import { LineNumbers } from '../LineNumbers/LineNumbers';
 import { getParsedCodeLineList } from '../../utils/getParsedCodeLineList';
 import { getClassNames } from '../../utils/getClassNames';
+import { getViewerClassNames } from '../../utils/getViewerClassNames';
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
 
 type CodeViewerProps = {
@@ -44,9 +45,7 @@ export const CodeViewer = ({
   };
 
   return (
-    <div
-      className={`${styles.viewer} ${theme === 'dark' ? styles.dark : styles.light} ${currentStep === 3 ? 'z-[200] bg-white' : ''}`}
-    >
+    <div className={getViewerClassNames(styles, theme, currentStep)}>
       <div className={styles.scrollContainer}>
         <LineNumbers codeLineList={codeLineList} />
 
