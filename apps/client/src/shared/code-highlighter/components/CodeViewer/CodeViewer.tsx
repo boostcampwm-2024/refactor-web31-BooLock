@@ -1,7 +1,8 @@
-import { CodeContent } from '../CodeContent/CodeContent';
+import styles from '../../styles/CodeViewer.module.css';
+import { useDiffCodeAnimate } from '../../hooks/useDiffCodeAnimate';
 import { LineNumbers } from '../LineNumbers/LineNumbers';
 import { getParsedCodeLineList } from '../../utils/getParsedCodeLineList';
-import styles from '../../styles/CodeViewer.module.css';
+import { getClassNames } from '../../utils/getClassNames';
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
 
 type CodeViewerProps = {
@@ -27,7 +28,20 @@ export const CodeViewer = ({
   selectedBlockType,
 }: CodeViewerProps) => {
   const codeLineList = getParsedCodeLineList(code, type, styles, selectedBlockType);
+  const highlightedLines = useDiffCodeAnimate(code, codeLineList);
   const { currentStep } = useCoachMarkStore();
+
+  const getLineClassNames = (line: string, index: number) => {
+    return getClassNames(
+      styles,
+      index,
+      line,
+      highlightedLines,
+      selectedBlockStartLine,
+      selectedBlockLength,
+      selectedBlockType
+    );
+  };
 
   return (
     <div
@@ -36,13 +50,19 @@ export const CodeViewer = ({
       <div className={styles.scrollContainer}>
         <LineNumbers codeLineList={codeLineList} />
 
-        <CodeContent
-          code={code}
-          codeLineList={codeLineList}
-          selectedBlockLength={selectedBlockLength}
-          selectedBlockStartLine={selectedBlockStartLine}
-          selectedBlockType={selectedBlockType}
-        />
+        <pre className={styles.codeContent}>
+          <code>
+            {codeLineList.map((line, index) => {
+              return (
+                <div
+                  key={index}
+                  className={getLineClassNames(line, index)}
+                  dangerouslySetInnerHTML={{ __html: line }}
+                />
+              );
+            })}
+          </code>
+        </pre>
       </div>
     </div>
   );
