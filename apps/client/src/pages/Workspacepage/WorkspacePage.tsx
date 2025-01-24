@@ -5,8 +5,6 @@ import { NotFound } from '@/pages/NotFound/NotFound';
 import { useParams } from 'react-router-dom';
 import { useLayoutEffect, useEffect } from 'react';
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
-import { useWorkspaceSave } from '@/shared/hooks/useWorkspaceSave';
-import { useWorkspaceChangeStatusStore } from '@/shared/store';
 
 /**
  *
@@ -15,7 +13,6 @@ import { useWorkspaceChangeStatusStore } from '@/shared/store';
  */
 export const WorkspacePage = () => {
   const { workspaceId } = useParams();
-  const { handleSave, isPending: isWorkspacePending } = useWorkspaceSave();
   const { isPending, isError } = useGetWorkspace(workspaceId as string);
   usePreventLeaveWorkspacePage();
   const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore();
@@ -38,20 +35,6 @@ export const WorkspacePage = () => {
       toolboxDiv.classList.remove('coachMarkHighlight');
     }
   }, [currentStep, toolboxDiv]);
-
-  useEffect(() => {
-    const unsubscribe = useWorkspaceChangeStatusStore.subscribe((state) => {
-      if ((state.isBlockChanged || state.isCssChanged) && !isWorkspacePending) {
-        handleSave();
-        console.log('🐛 자동 저장 실행!');
-        useWorkspaceChangeStatusStore.getState().resetChangedStatusState();
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [handleSave, isWorkspacePending]);
 
   if (isError) {
     return <NotFound />;

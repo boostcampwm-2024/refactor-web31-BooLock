@@ -18,7 +18,7 @@ export const WorkspacePageHeader = () => {
         <Logo isBlack={false} />
         <WorkspaceNameInput />
       </div>
-      <div className="flex gap-11">
+      <div className="flex gap-4">
         <button
           className="text-medium-rg hover flex items-center gap-1 text-gray-300 hover:text-gray-500"
           onClick={openCoachMark}

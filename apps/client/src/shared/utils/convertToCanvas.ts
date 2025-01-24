@@ -3,7 +3,7 @@ import { useIframeStore } from '@/shared/store';
 import { IFRAME_ERROR_MESSAGE } from '@/shared/utils';
 import html2canvas from 'html2canvas';
 
-export const capturePreview = async () => {
+export const convertToCanvas = async () => {
   const previewIframe = useIframeStore.getState().iframeRef?.current;
 
   if (!previewIframe) {
@@ -19,18 +19,18 @@ export const capturePreview = async () => {
   const canvas = await html2canvas(previewDocument.documentElement, {
     useCORS: true,
     logging: true,
+    allowTaint: true,
     imageTimeout: 20000,
+    proxy: 'https://boolock-storage.kr.object.ncloudstorage.com/',
     scale: 2,
-    width: 600,
-    height: 600,
+    width: previewIframe.clientWidth,
+    height: previewIframe.clientWidth,
     ignoreElements: (element) => {
       if (!element || !element.getBoundingClientRect) return true;
       const rect = element.getBoundingClientRect();
 
-      return rect.y - previewY > 600;
+      return rect.y - previewY > previewIframe.clientWidth;
     },
   });
-  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/webp'));
-  const thumbnail = new File([blob as Blob], 'thumbnail.webp', { type: 'image/webp' });
-  return thumbnail;
+  return canvas;
 };

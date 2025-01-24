@@ -1,8 +1,10 @@
 import { useBlocker } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useWorkspaceChangeStatusStore } from '@/shared/store';
+import { useWorkspaceSave } from './useWorkspaceSave';
 
 export const usePreventLeaveWorkspacePage = () => {
+  const { handleSave } = useWorkspaceSave();
   const { isBlockChanged, isCssChanged } = useWorkspaceChangeStatusStore();
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
@@ -12,35 +14,21 @@ export const usePreventLeaveWorkspacePage = () => {
   const promptOfLeavePage = `저장하지 않은 변경사항이 있습니다. 정말로 떠나시겠습니까?`;
   useEffect(() => {
     if (blocker.state === 'blocked') {
-      const confirmLeave = window.confirm(promptOfLeavePage);
-      if (confirmLeave) {
-        blocker.proceed();
-      } else {
-        blocker.reset();
-      }
+      handleSave();
     }
   }, [blocker.state, isBlockChanged, isCssChanged]);
 
   const handleBeforeUnload = (e: Event) => {
-    e.preventDefault();
-  };
-
-  const onPreventLeave = () => {
-    window.addEventListener('beforeunload', handleBeforeUnload);
-  };
-
-  const offPreventLeave = () => {
-    window.removeEventListener('beforeunload', handleBeforeUnload);
+    if (isBlockChanged || isCssChanged) {
+      e.preventDefault();
+      alert(promptOfLeavePage);
+    } else {
+      handleSave();
+    }
   };
 
   useEffect(() => {
-    if (isBlockChanged || isCssChanged) {
-      onPreventLeave();
-    } else {
-      offPreventLeave();
-    }
-    return () => {
-      offPreventLeave();
-    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [isBlockChanged, isCssChanged]);
 };

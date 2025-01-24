@@ -42,7 +42,6 @@ export const useSaveWorkspace = (workspaceId: string) => {
     onSuccess: () => {
       resetChangedStatusState();
       queryClient.invalidateQueries({ queryKey: workspaceKeys.list() });
-      toast.success('성공적으로 저장되었습니다.');
     },
     onError: () => {
       toast.error('저장에 실패했습니다.');

@@ -32,6 +32,7 @@ import TabbedToolbox from '@/core/tabbedToolbox';
 import { customTooltip } from '@/core/customTooltip';
 import { registerCustomComponents } from '@/core/register';
 import { removeCssClassNamePrefix, trackEvent } from '@/shared/utils';
+import { useWorkspaceSave } from '@/shared/hooks/useWorkspaceSave';
 
 for (const blockType in Blockly.Blocks) {
   if (Object.prototype.hasOwnProperty.call(Blockly.Blocks, blockType)) {
@@ -70,13 +71,14 @@ export const WorkspaceContent = () => {
   const [cssCode, setCssCode] = useState<string>('');
   const { totalCssPropertyObj } = useCssPropsStore();
   const { workspace, setWorkspace, canvasInfo } = useWorkspaceStore();
-  const { setIsBlockChanged } = useWorkspaceChangeStatusStore();
+  const { isBlockChanged, isCssChanged, setIsBlockChanged } = useWorkspaceChangeStatusStore();
   const { setCurrentCssClassName } = useCssPropsStore();
   const { findClassBlock } = useClassBlockStore();
   const [selectedBlockStartLine, setSelectedBlockStartLine] = useState<number>(0);
   const [selectedBlockLength, setSelectedBlockLength] = useState<number>(0);
   const [selectedBlockType, setSelectedBlockType] = useState<string | null>(null);
   const isBlockLoadingFinish = useRef<boolean>(false);
+  const { handleSave, isPending } = useWorkspaceSave();
 
   useEffect(() => {
     const newWorkspace = Blockly.inject('blocklyDiv', {
@@ -141,14 +143,16 @@ export const WorkspaceContent = () => {
         setHtmlCode(codeWithNoId);
       }
 
-      if (
-        event.type === Blockly.Events.VIEWPORT_CHANGE ||
-        event.type === Blockly.Events.BLOCK_DRAG ||
-        event.type === Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE ||
-        (event.type === Blockly.Events.BLOCK_MOVE && isBlockLoadingFinish.current) ||
-        (event.type === Blockly.Events.BLOCK_DELETE && isBlockLoadingFinish.current)
-      ) {
-        setIsBlockChanged(true);
+      // workspace 변경에 따른 blockChange state 변경
+      if (isBlockLoadingFinish.current) {
+        if (
+          event.type === Blockly.Events.CREATE ||
+          event.type === Blockly.Events.BLOCK_CHANGE ||
+          event.type === Blockly.Events.BLOCK_MOVE ||
+          event.type === Blockly.Events.BLOCK_DELETE
+        ) {
+          setIsBlockChanged(true);
+        }
       }
 
       if (event.type === Blockly.Events.FINISHED_LOADING) {
@@ -236,6 +240,12 @@ export const WorkspaceContent = () => {
       workspace.removeChangeListener(handleBlockClick);
     };
   }, [workspace]);
+
+  useEffect(() => {
+    if ((isBlockChanged || isCssChanged) && !isPending) {
+      handleSave();
+    }
+  }, [handleSave, isPending, isBlockChanged, isCssChanged]);
 
   useEffect(() => {
     if (!workspace || !canvasInfo || canvasInfo.length === 0) {
