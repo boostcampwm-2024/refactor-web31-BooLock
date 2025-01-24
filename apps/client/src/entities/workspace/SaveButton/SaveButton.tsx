@@ -1,9 +1,9 @@
 import * as Blockly from 'blockly/core';
 
+import { capturePreview, trackEvent } from '@/shared/utils';
 import { useCssPropsStore, useResetCssStore, useWorkspaceStore } from '@/shared/store';
 
 import { Spinner } from '@/shared/ui';
-import { capturePreview, trackEvent } from '@/shared/utils';
 import { cssStyleToolboxConfig } from '@/shared/blockly';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
@@ -19,7 +19,7 @@ import { useState } from 'react';
 export const SaveButton = () => {
   const workspaceId = useParams().workspaceId as string;
   const { mutate: saveWorkspace, isPending } = useSaveWorkspace(workspaceId);
-  const { totalCssPropertyObj } = useCssPropsStore();
+  const totalCssPropertyObj = useCssPropsStore((state) => state.totalCssPropertyObj);
   const { workspace } = useWorkspaceStore();
   const { isResetCssChecked } = useResetCssStore();
   const [isCapture, setIsCapture] = useState<boolean>(false);

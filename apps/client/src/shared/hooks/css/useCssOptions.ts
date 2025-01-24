@@ -4,7 +4,10 @@ import { debounce } from '@/shared/utils';
 import { useCallback } from 'react';
 
 export const useCssOptions = () => {
-  const { setCheckedCssPropertyObj, setCssOptionObj, currentCssClassName } = useCssPropsStore();
+  const setCheckedCssPropertyObj = useCssPropsStore((state) => state.setCheckedCssPropertyObj);
+  const setCssOptionObj = useCssPropsStore((state) => state.setCssOptionObj);
+  const currentCssClassName = useCssPropsStore((state) => state.currentCssClassName);
+
   const { setIsCssChanged } = useWorkspaceChangeStatusStore();
   const handleCssPropertyCheckboxChange = (
     property: string,

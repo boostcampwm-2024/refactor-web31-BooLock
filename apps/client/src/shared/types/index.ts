@@ -18,3 +18,5 @@ export type { TTabConfig, TTabsConfig, TTabToolboxConfig } from './tabType';
 export type { TBlock, TToolboxConfig } from './styleToolboxType';
 export type { TButtonContent } from './modalButtonType';
 export type { TImage } from './imageTagType';
+export type { TOption } from './customSelectType';
+export { SelectSize } from './customSelectType';

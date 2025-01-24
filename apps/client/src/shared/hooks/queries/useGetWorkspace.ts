@@ -17,13 +17,13 @@ import { workspaceKeys } from '@/shared/hooks';
 export const useGetWorkspace = (workspaceId: string) => {
   const workspaceApi = WorkspaceApi();
   const userId = getUserId() || createUserId();
-  const { initCssPropertyObj } = useCssPropsStore();
+  const initCssPropertyObj = useCssPropsStore((state) => state.initCssPropertyObj);
   const { initClassBlockList } = useClassBlockStore();
   const { setCanvasInfo, setName } = useWorkspaceStore();
   const { resetChangedStatusState } = useWorkspaceChangeStatusStore();
   const { setIsResetCssChecked } = useResetCssStore();
   const { setInitialImageMap, setInitialImageList } = useImageModalStore();
-  const { data, isPending, isError } = useSuspenseQuery({
+  const { data, isError } = useSuspenseQuery({
     queryKey: workspaceKeys.detail(workspaceId),
     queryFn: () => {
       resetChangedStatusState();
@@ -55,5 +55,4 @@ export const useGetWorkspace = (workspaceId: string) => {
     setInitialImageMap(data.workspaceDto.imageMap);
     setInitialImageList(data.workspaceDto.imageList);
   }, [isError, data]);
-  return { data, isPending, isError };
 };

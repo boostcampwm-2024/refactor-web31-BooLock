@@ -1,13 +1,14 @@
-import { useCssPropsStore, useCssTooltipStore } from '@/shared/store';
 import { useEffect, useState } from 'react';
 
 import { TCssCategoryItem } from '@/shared/types';
 import { useCssOptions } from '@/shared/hooks';
+import { useCssPropsStore } from '@/shared/store';
 
 export const useCssOptionItem = (cssItem: TCssCategoryItem) => {
   const { handleCssOptionChange } = useCssOptions();
-  const { setOffsetX, setOffsetY } = useCssTooltipStore();
-  const { currentCssClassName, totalCssPropertyObj, selectedCssCategory } = useCssPropsStore();
+  const currentCssClassName = useCssPropsStore((state) => state.currentCssClassName);
+  const totalCssPropertyObj = useCssPropsStore((state) => state.totalCssPropertyObj);
+  const selectedCssCategory = useCssPropsStore((state) => state.selectedCssCategory);
 
   const [cssOptionValue, setCssOptionValue] = useState<string>('');
   const [isHover, setIsHover] = useState<boolean>(false);
@@ -17,6 +18,9 @@ export const useCssOptionItem = (cssItem: TCssCategoryItem) => {
   const [cssOption, setCssOption] = useState<string>(
     cssItem.type === 'select' && cssItem.option!.length > 0 ? cssItem.option![0] : ''
   );
+
+  const [offsetX, setOffsetX] = useState<number>(0);
+  const [offsetY, setOffsetY] = useState<number>(0);
 
   useEffect(() => {
     if (totalCssPropertyObj[currentCssClassName]) {
@@ -84,5 +88,7 @@ export const useCssOptionItem = (cssItem: TCssCategoryItem) => {
     handleMouseEnter,
     handleMouseLeave,
     handleChangeInputValue,
+    offsetX,
+    offsetY,
   };
 };
