@@ -4,6 +4,7 @@ import { useGetWorkspace, usePreventLeaveWorkspacePage } from '@/shared/hooks';
 
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
 import { useParams } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 
 /**
  *
@@ -14,7 +15,13 @@ export const WorkspacePage = () => {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   useGetWorkspace(workspaceId!);
   usePreventLeaveWorkspacePage();
-  const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore();
+  const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore(
+    useShallow((state) => ({
+      currentStep: state.currentStep,
+      isCoachMarkOpen: state.isCoachMarkOpen,
+      openCoachMark: state.openCoachMark,
+    }))
+  );
   const toolboxDiv = document.querySelector('.blocklyToolboxDiv');
 
   useLayoutEffect(() => {
@@ -39,7 +46,7 @@ export const WorkspacePage = () => {
     <>
       <div className="flex h-screen flex-col">
         {isCoachMarkOpen && <CoachMark />}
-        <WorkspacePageHeader />
+        <WorkspacePageHeader currentStep={currentStep} />
         <WorkspaceContent />
       </div>
       <ImageTagModal />

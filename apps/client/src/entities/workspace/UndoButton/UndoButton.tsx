@@ -1,13 +1,14 @@
 import { CircleButton } from '@/shared/ui';
 import LeftArrow from '@/shared/assets/arrow_left.svg?react';
 import { useWorkspaceStore } from '@/shared/store';
+import { memo } from 'react';
 
 /**
  *
  * @description
  * 워크스페이스 캔버스에서 undo 기능을 실행시키는 버튼입니다.
  */
-export const UndoButton = () => {
+export const UndoButton = memo(() => {
   const { workspace } = useWorkspaceStore();
 
   const handleUndo = () => {
@@ -21,4 +22,4 @@ export const UndoButton = () => {
       <LeftArrow />
     </CircleButton>
   );
-};
+});

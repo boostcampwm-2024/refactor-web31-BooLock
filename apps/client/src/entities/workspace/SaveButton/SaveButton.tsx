@@ -8,7 +8,7 @@ import { cssStyleToolboxConfig } from '@/shared/blockly';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { useSaveWorkspace } from '@/shared/hooks';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 /**
  *
@@ -16,7 +16,7 @@ import { useState } from 'react';
  * Workspace 상태를 저장하는 버튼입니다.
  * 저장 항목 : css 속성, 캔버스 블록 상태, css class 블록, css 리셋 여부, 미리보기 썸네일
  */
-export const SaveButton = () => {
+export const SaveButton = memo(() => {
   const workspaceId = useParams().workspaceId as string;
   const { mutate: saveWorkspace, isPending } = useSaveWorkspace(workspaceId);
   const totalCssPropertyObj = useCssPropsStore((state) => state.totalCssPropertyObj);
@@ -63,4 +63,4 @@ export const SaveButton = () => {
       </button>
     </>
   );
-};
+});
