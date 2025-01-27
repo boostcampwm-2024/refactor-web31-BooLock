@@ -47,21 +47,12 @@ export const useWorkspaceSave = () => {
 
       worker.onmessage = (event) => {
         if (event.data.error) {
-          console.log(event.data.error);
           setIsCapture(false);
           return;
         }
 
         const { thumbnail } = event.data;
         const serialized = Blockly.serialization.workspaces.save(workspace!) as any;
-
-        console.log({
-          totalCssPropertyObj,
-          canvas: serialized,
-          classBlockList: cssStyleToolboxConfig.contents,
-          cssResetStatus: isResetCssChecked,
-          thumbnail,
-        });
 
         saveWorkspace({
           totalCssPropertyObj,
