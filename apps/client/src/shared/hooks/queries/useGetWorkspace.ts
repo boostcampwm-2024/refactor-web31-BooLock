@@ -3,50 +3,39 @@ import { createUserId, getUserId, removeCssClassNamePrefix } from '@/shared/util
 import {
   useClassBlockStore,
   useCssPropsStore,
+  useImageModalStore,
   useResetCssStore,
   useWorkspaceChangeStatusStore,
   useWorkspaceStore,
-  useImageModalStore,
 } from '@/shared/store';
 
 import { WorkspaceApi } from '@/shared/api';
-import toast from 'react-hot-toast';
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { workspaceKeys } from '@/shared/hooks';
 
 export const useGetWorkspace = (workspaceId: string) => {
   const workspaceApi = WorkspaceApi();
   const userId = getUserId() || createUserId();
-  const { initCssPropertyObj } = useCssPropsStore();
+  const initCssPropertyObj = useCssPropsStore((state) => state.initCssPropertyObj);
   const { initClassBlockList } = useClassBlockStore();
   const { setCanvasInfo, setName } = useWorkspaceStore();
   const { resetChangedStatusState } = useWorkspaceChangeStatusStore();
   const { setIsResetCssChecked } = useResetCssStore();
   const { setInitialImageMap, setInitialImageList } = useImageModalStore();
-  const { data, isPending, isError } = useQuery({
+  const { data, isError } = useSuspenseQuery({
     queryKey: workspaceKeys.detail(workspaceId),
     queryFn: () => {
+      resetChangedStatusState();
       return workspaceApi.getWorkspace(userId, workspaceId);
     },
   });
 
   useEffect(() => {
-    resetChangedStatusState();
-  }, []);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error('워크스페이스 정보 불러오기 실패');
-      return;
-    }
-    if (!data) {
+    if (isError || !data || !data.workspaceDto) {
       return;
     }
 
-    if (!data.workspaceDto) {
-      return;
-    }
     setName(data.workspaceDto.name);
     Object.keys(data.workspaceDto.totalCssPropertyObj).forEach((className) => {
       createCssClassBlock(className);
@@ -66,5 +55,4 @@ export const useGetWorkspace = (workspaceId: string) => {
     setInitialImageMap(data.workspaceDto.imageMap);
     setInitialImageList(data.workspaceDto.imageList);
   }, [isError, data]);
-  return { data, isPending, isError };
 };

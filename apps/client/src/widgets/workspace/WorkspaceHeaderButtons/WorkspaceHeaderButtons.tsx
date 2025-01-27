@@ -1,15 +1,19 @@
 import { CodeExportButton, RedoButton, UndoButton } from '@/entities';
+import { memo } from 'react';
 
-import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
+type TWorkspaceHeaderButtons = {
+  currentStep: number;
+};
 
-export const WorkspaceHeaderButtons = () => {
-  const { currentStep } = useCoachMarkStore();
+export const WorkspaceHeaderButtons = memo(({ currentStep }: TWorkspaceHeaderButtons) => {
+  const buttonsClassName = `flex items-center gap-3 ${currentStep === 4 ? 'z-[99999]' : ''}`;
+
   return (
-    <div className={`flex items-center gap-3 ${currentStep === 4 ? 'z-[99999]' : ''}`}>
+    <div className={buttonsClassName}>
       <CodeExportButton />
 
       <UndoButton />
       <RedoButton />
     </div>
   );
-};
+});

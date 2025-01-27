@@ -6,7 +6,7 @@ const meta: Meta<typeof WorkspaceContainer> = {
   title: 'widgets/home/WorkspaceContainer',
   component: WorkspaceContainer,
   parameters: {
-    layout: 'fullscreen',
+    layout: 'centered',
   },
   tags: ['autodocs'],
 };

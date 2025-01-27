@@ -1,10 +1,10 @@
-import { ImageTagModal, CoachMark, WorkspaceContent, WorkspacePageHeader } from '@/widgets';
+import { CoachMark, ImageTagModal, WorkspaceContent, WorkspacePageHeader } from '@/widgets';
+import { useEffect, useLayoutEffect } from 'react';
 import { useGetWorkspace, usePreventLeaveWorkspacePage } from '@/shared/hooks';
-import { Loading } from '@/shared/ui';
-import { NotFound } from '@/pages/NotFound/NotFound';
-import { useParams } from 'react-router-dom';
-import { useLayoutEffect, useEffect } from 'react';
+
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
+import { useParams } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 
 /**
  *
@@ -12,10 +12,16 @@ import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
  * 워크스페이스 페이지 컴포넌트
  */
 export const WorkspacePage = () => {
-  const { workspaceId } = useParams();
-  const { isPending, isError } = useGetWorkspace(workspaceId as string);
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  useGetWorkspace(workspaceId!);
   usePreventLeaveWorkspacePage();
-  const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore();
+  const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore(
+    useShallow((state) => ({
+      currentStep: state.currentStep,
+      isCoachMarkOpen: state.isCoachMarkOpen,
+      openCoachMark: state.openCoachMark,
+    }))
+  );
   const toolboxDiv = document.querySelector('.blocklyToolboxDiv');
 
   useLayoutEffect(() => {
@@ -36,16 +42,11 @@ export const WorkspacePage = () => {
     }
   }, [currentStep, toolboxDiv]);
 
-  if (isError) {
-    return <NotFound />;
-  }
-
   return (
     <>
       <div className="flex h-screen flex-col">
-        {isPending && <Loading />}
         {isCoachMarkOpen && <CoachMark />}
-        <WorkspacePageHeader />
+        <WorkspacePageHeader currentStep={currentStep} />
         <WorkspaceContent />
       </div>
       <ImageTagModal />

@@ -1,4 +1,4 @@
-import { FocusEventHandler, KeyboardEventHandler, useEffect, useState } from 'react';
+import { FocusEventHandler, KeyboardEventHandler, memo, useEffect, useState } from 'react';
 
 import { Spinner } from '@/shared/ui';
 import { useParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { useWorkspaceStore } from '@/shared/store';
  * @description
  * 워크스페이스 이름을 수정할 수 있는 컴포넌트입니다.
  */
-export const WorkspaceNameInput = () => {
+export const WorkspaceNameInput = memo(() => {
   const { workspaceId } = useParams() as { workspaceId: string };
   const { mutate, isPending } = useUpdateWorkspaceName();
   const { name } = useWorkspaceStore();
@@ -68,4 +68,4 @@ export const WorkspaceNameInput = () => {
       </div>
     </>
   );
-};
+});

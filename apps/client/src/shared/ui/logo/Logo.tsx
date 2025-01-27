@@ -1,6 +1,7 @@
 import BlackLogoText from '@/shared/assets/boolock_logo_black.svg?react';
 import { Link } from 'react-router-dom';
 import WhiteLogoText from '@/shared/assets/boolock_logo_white.svg?react';
+import { memo } from 'react';
 
 type LogoProps = {
   isBlack: boolean;
@@ -11,7 +12,7 @@ type LogoProps = {
  * @description
  * 로고 컴포넌트 (흰색/검은색), 클릭 시 홈페이지로 이동
  */
-export const Logo = ({ isBlack }: LogoProps) => {
+export const Logo = memo(({ isBlack }: LogoProps) => {
   return (
     <Link to="/">
       <div className="flex items-center gap-3">
@@ -25,4 +26,4 @@ export const Logo = ({ isBlack }: LogoProps) => {
       </div>
     </Link>
   );
-};
+});

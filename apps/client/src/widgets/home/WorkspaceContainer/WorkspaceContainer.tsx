@@ -1,17 +1,24 @@
-import { EmptyWorkspace, WorkspaceGrid, WorkspaceHeader, WorkspaceList } from '@/widgets';
-import { useGetWorkspaceList, useInfiniteScroll } from '@/shared/hooks';
+import { EmptyWorkspace, WorkspaceGrid, WorkspaceList } from '@/widgets';
+import { useGetWorkspaceList, useInfiniteScroll, useVirtualScroll } from '@/shared/hooks';
 
 import { SkeletonWorkspaceList } from '@/shared/ui';
-import { WorkspaceLoadError } from '@/entities';
+import { TWorkspace } from '@/shared/types';
 
 /**
  *
  * @description
- * 워크스페이스 헤더와 그리드를 감싸는 컨테이너 컴포넌트
+ * 워크스페이스 리스트를 렌더링하는 컨테이너 컴포넌트
  */
 export const WorkspaceContainer = () => {
-  const { hasNextPage, fetchNextPage, isPending, isFetchingNextPage, isError, workspaceList } =
+  const { hasNextPage, fetchNextPage, isPending, isFetchingNextPage, workspaceList } =
     useGetWorkspaceList();
+
+  const { renderedData, offsetY, totalHeight } = useVirtualScroll<TWorkspace>({
+    data: workspaceList,
+    topSectionHeight: 594,
+    renderedItemHeight: 262,
+    gapY: 32,
+  });
 
   const fetchCallback: IntersectionObserverCallback = (entries, observer) => {
     entries.forEach((entry) => {
@@ -25,29 +32,25 @@ export const WorkspaceContainer = () => {
   const nextFetchTargetRef = useInfiniteScroll({ intersectionCallback: fetchCallback });
 
   return (
-    <section className="w-full max-w-[1152px] px-3 pb-48">
-      <WorkspaceHeader />
-      {isPending && (
-        <WorkspaceGrid>
-          <SkeletonWorkspaceList skeletonNum={8} />
-        </WorkspaceGrid>
-      )}
-      {isError ? (
-        <WorkspaceLoadError />
-      ) : (
-        workspaceList &&
+    <>
+      {workspaceList &&
         (workspaceList.length === 0 ? (
           <EmptyWorkspace />
         ) : (
-          <WorkspaceGrid>
-            <WorkspaceList workspaceList={workspaceList} />
-            {isFetchingNextPage && <SkeletonWorkspaceList skeletonNum={8} />}
-          </WorkspaceGrid>
-        ))
-      )}
+          <div
+            style={{
+              height: `${totalHeight}px`,
+            }}
+          >
+            <WorkspaceGrid offsetY={offsetY}>
+              <WorkspaceList workspaceList={renderedData} />
+              {isFetchingNextPage && <SkeletonWorkspaceList skeletonNum={8} />}
+            </WorkspaceGrid>
+          </div>
+        ))}
       {!isPending && !isFetchingNextPage && hasNextPage && (
         <div ref={nextFetchTargetRef} className="h-3 w-full"></div>
       )}
-    </section>
+    </>
   );
 };

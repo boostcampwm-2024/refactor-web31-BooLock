@@ -1,6 +1,5 @@
 import { TCssCategory } from '@/shared/types';
 import { useCssPropsStore } from '@/shared/store';
-
 type CssCategoryButtonProps = {
   cssCategory: TCssCategory;
 };
@@ -11,7 +10,8 @@ type CssCategoryButtonProps = {
  * CSS 카테고리를 선택할 수 있는 버튼 컴포넌트
  */
 export const CssCategoryButton = ({ cssCategory }: CssCategoryButtonProps) => {
-  const { selectedCssCategory, setSelectedCssCategory } = useCssPropsStore();
+  const selectedCssCategory = useCssPropsStore((state) => state.selectedCssCategory);
+  const setSelectedCssCategory = useCssPropsStore((state) => state.setSelectedCssCategory);
 
   return (
     <button

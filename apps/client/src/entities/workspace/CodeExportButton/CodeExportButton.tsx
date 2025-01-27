@@ -1,9 +1,9 @@
 import { Spinner } from '@/shared/ui';
 import { exportPreviewHtml } from '@/shared/utils';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
-export const CodeExportButton = () => {
+export const CodeExportButton = memo(() => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => {
@@ -32,4 +32,4 @@ export const CodeExportButton = () => {
       )}
     </button>
   );
-};
+});
