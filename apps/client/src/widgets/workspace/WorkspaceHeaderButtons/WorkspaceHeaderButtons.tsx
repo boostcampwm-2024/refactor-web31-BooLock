@@ -1,4 +1,4 @@
-import { CodeExportButton, RedoButton, SaveButton, UndoButton } from '@/entities';
+import { CodeExportButton, RedoButton, UndoButton } from '@/entities';
 import { memo } from 'react';
 
 type TWorkspaceHeaderButtons = {
@@ -11,7 +11,7 @@ export const WorkspaceHeaderButtons = memo(({ currentStep }: TWorkspaceHeaderBut
   return (
     <div className={buttonsClassName}>
       <CodeExportButton />
-      <SaveButton />
+
       <UndoButton />
       <RedoButton />
     </div>
