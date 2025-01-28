@@ -1,4 +1,7 @@
-FROM base-image AS frontend-build
+
+ARG DOCKERHUB_USERNAME
+ARG TYPE
+FROM ${DOCKERHUB_USERNAME}/base-image-${TYPE} AS frontend-build
 
 WORKDIR /app/apps/client
 COPY ./apps/client .
@@ -7,7 +10,7 @@ RUN pnpm install --offline --frozen-lockfile &&\
 
 FROM nginx:alpine AS frontend
 
-COPY /apps/client/nginx.conf /etc/nginx/conf.d/default.conf
+COPY /apps/client/production/nginx.conf /etc/nginx/conf.d/default.conf
 COPY /apps/client/ssl /etc/nginx/ssl
 RUN chmod 644 /etc/nginx/ssl/fullchain.pem &&\ 
   chmod 600 /etc/nginx/ssl/privkey.pem &&\ 

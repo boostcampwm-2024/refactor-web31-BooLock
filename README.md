@@ -1,13 +1,11 @@
 <h1>BooLock</h1>
   
-<img width="1704" alt="Frame 2016" src="https://github.com/user-attachments/assets/74cc69d6-7d6f-48ed-9e06-1d6d5f6a5c43">
-
-</div>
+![image](https://github.com/user-attachments/assets/c58af651-8a5d-4b09-a98e-04ce50f27fca)
 
 <br/>
 
 <p align="center"> <br/>
-  <strong>웹 개발, 블록으로 쉽고 즐겁게!</strong> <br />
+  <strong>웹 개발, 블록 조립으로 쉽고 재밌게!</strong> <br />
   <strong>HTML과 CSS를 배우는 블록코딩 플랫폼</strong> <br /> <br />
   나만의 창작물을 완성하고, 새로운 웹 개발의 가능성을 경험해보세요. ♥️ <br /> <br />
   <strong>👇 배포 사이트</strong> <br />

@@ -25,28 +25,23 @@ type Story = StoryObj<typeof CssTooltip>;
 export const Default: Story = {
   args: {
     description: 'css 툴팁입니다.',
-    isOpen: false,
     leftX: 0,
     topY: 0,
   },
   render: (args) => {
-    const [isOpen, setIsOpen] = useState(args.isOpen);
     const [leftX, setLeftX] = useState(0);
     const [topY, setTopY] = useState(0);
 
     const handleMouseEnter = (e: React.MouseEvent) => {
-      setIsOpen(true);
       setLeftX(e.currentTarget.getBoundingClientRect().x + 8);
       setTopY(e.currentTarget.getBoundingClientRect().y + 8);
     };
 
-    const handleMouseLeave = () => {
-      setIsOpen(false);
-    };
+    const handleMouseLeave = () => {};
     return (
       <div>
         <QuestionIcon onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
-        <CssTooltip description={args.description} leftX={leftX} topY={topY} isOpen={isOpen} />
+        <CssTooltip description={args.description} leftX={leftX} topY={topY} />
       </div>
     );
   },
@@ -55,28 +50,23 @@ export const Default: Story = {
 export const ScreenOverflow: Story = {
   args: {
     description: 'css 툴팁입니다.',
-    isOpen: false,
     leftX: 0,
     topY: 0,
   },
   render: (args) => {
-    const [isOpen, setIsOpen] = useState(args.isOpen);
     const [leftX, setLeftX] = useState(0);
     const [topY, setTopY] = useState(0);
 
     const handleMouseEnter = (e: React.MouseEvent) => {
-      setIsOpen(true);
       setLeftX(e.currentTarget.getBoundingClientRect().x + 8);
       setTopY(-e.currentTarget.getBoundingClientRect().y + 40);
     };
 
-    const handleMouseLeave = () => {
-      setIsOpen(false);
-    };
+    const handleMouseLeave = () => {};
     return (
       <div>
         <QuestionIcon onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
-        <CssTooltip description={args.description} leftX={leftX} topY={topY} isOpen={isOpen} />
+        <CssTooltip description={args.description} leftX={leftX} topY={topY} />
       </div>
     );
   },

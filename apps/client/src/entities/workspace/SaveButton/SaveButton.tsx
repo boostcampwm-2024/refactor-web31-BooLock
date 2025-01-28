@@ -1,14 +1,5 @@
-import * as Blockly from 'blockly/core';
-
-import { useCssPropsStore, useResetCssStore, useWorkspaceStore } from '@/shared/store';
-
+import { useWorkspaceSave } from '@/shared/hooks/useWorkspaceSave';
 import { Spinner } from '@/shared/ui';
-import { capturePreview, trackEvent } from '@/shared/utils';
-import { cssStyleToolboxConfig } from '@/shared/blockly';
-import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
-import { useSaveWorkspace } from '@/shared/hooks';
-import { useState } from 'react';
 
 /**
  *
@@ -17,40 +8,13 @@ import { useState } from 'react';
  * 저장 항목 : css 속성, 캔버스 블록 상태, css class 블록, css 리셋 여부, 미리보기 썸네일
  */
 export const SaveButton = () => {
-  const workspaceId = useParams().workspaceId as string;
-  const { mutate: saveWorkspace, isPending } = useSaveWorkspace(workspaceId);
-  const { totalCssPropertyObj } = useCssPropsStore();
-  const { workspace } = useWorkspaceStore();
-  const { isResetCssChecked } = useResetCssStore();
-  const [isCapture, setIsCapture] = useState<boolean>(false);
-
-  const handleClick = async () => {
-    trackEvent('workspace_saved');
-    try {
-      const canvas = Blockly.serialization.workspaces.save(workspace!) as any;
-      setIsCapture(true);
-      const thumbnail = await capturePreview();
-      saveWorkspace({
-        totalCssPropertyObj,
-        canvas,
-        classBlockList: cssStyleToolboxConfig.contents,
-        cssResetStatus: isResetCssChecked,
-        thumbnail,
-      });
-      setIsCapture(false);
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      }
-    } finally {
-      setIsCapture(false);
-    }
-  };
+  const { handleSave, isCapture, isPending } = useWorkspaceSave();
 
   return (
     <>
+      <p>{isPending || isCapture ? '저장 중' : '저장 완료'}</p>
       <button
-        onClick={handleClick}
+        onClick={handleSave}
         className="text-bold-rg w-16 rounded-[30px] bg-green-500 py-2 text-green-100 hover:border hover:border-green-500 hover:bg-green-100 hover:text-green-500"
         disabled={isPending}
         aria-label="워크스페이스 저장 버튼"

@@ -1,10 +1,16 @@
+/**
+ *
+ * @description
+ * 주어진 CSS 코드에 하이라이트 스타일을 적용하여 변환
+ */
 export const parseHighlightCss = (
   css: string,
   styles: Record<string, string>,
   selectedBlockType: string | null
 ) => {
   const lines = css.split('\n');
-  let isWithinBlock = false; // 블록 내부인지 추적
+  // 블록 내부인지 추적
+  let isWithinBlock = false;
 
   const formattedCss = lines
     .map((line) => {

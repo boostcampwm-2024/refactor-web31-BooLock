@@ -4,6 +4,7 @@ import { useGetWorkspace, usePreventLeaveWorkspacePage } from '@/shared/hooks';
 
 import { useCoachMarkStore } from '@/shared/store/useCoachMarkStore';
 import { useParams } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 
 /**
  *
@@ -11,10 +12,16 @@ import { useParams } from 'react-router-dom';
  * 워크스페이스 페이지 컴포넌트
  */
 export const WorkspacePage = () => {
-  const { workspaceId } = useParams();
-  useGetWorkspace(workspaceId as string);
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  useGetWorkspace(workspaceId!);
   usePreventLeaveWorkspacePage();
-  const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore();
+  const { currentStep, isCoachMarkOpen, openCoachMark } = useCoachMarkStore(
+    useShallow((state) => ({
+      currentStep: state.currentStep,
+      isCoachMarkOpen: state.isCoachMarkOpen,
+      openCoachMark: state.openCoachMark,
+    }))
+  );
   const toolboxDiv = document.querySelector('.blocklyToolboxDiv');
 
   useLayoutEffect(() => {
@@ -39,7 +46,7 @@ export const WorkspacePage = () => {
     <>
       <div className="flex h-screen flex-col">
         {isCoachMarkOpen && <CoachMark />}
-        <WorkspacePageHeader />
+        <WorkspacePageHeader currentStep={currentStep} />
         <WorkspaceContent />
       </div>
       <ImageTagModal />

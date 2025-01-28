@@ -1,0 +1,19 @@
+ARG DOCKERHUB_USERNAME
+ARG TYPE
+FROM ${DOCKERHUB_USERNAME}/base-image-${TYPE} AS frontend-build
+
+WORKDIR /app/apps/client
+COPY ./apps/client .
+RUN pnpm install --offline --frozen-lockfile &&\
+  pnpm run build
+
+FROM nginx:alpine AS frontend
+
+COPY /apps/client/test/nginx.conf /etc/nginx/conf.d/default.conf
+RUN chown -R nginx:nginx /usr/share/nginx/html 
+
+COPY --from=frontend-build /app/apps/client/dist /usr/share/nginx/html/
+RUN chmod -R 755 /usr/share/nginx/html 
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

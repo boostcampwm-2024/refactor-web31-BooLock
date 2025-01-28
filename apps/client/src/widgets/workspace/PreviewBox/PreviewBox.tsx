@@ -34,6 +34,7 @@ export const PreviewBox = ({
   const { currentStep } = useCoachMarkStore();
   const { setIframeRef } = useIframeStore();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const scrollPosition = useRef<number>(0);
 
   const googleFontsLinksCode = `
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,16 +42,40 @@ export const PreviewBox = ({
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gothic+A1:wght@300;400;700&family=IBM+Plex+Sans+KR:wght@300;400;700&family=Nanum+Gothic:wght@400;700&family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet" />
   `;
-  const finalCssCode = isResetCssChecked ? `${resetCss}\n${cssCode}` : cssCode;
-  const styleCode = `<style> * { box-sizing : border-box; margin : 0; padding : 0; ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: #cdd9e4; border-radius: 4px; } } html, head, body { width : 100%; height : 100%;  } ${finalCssCode}</style>`;
-  const indexOfHead = htmlCode.indexOf('</head>');
-  const totalCode = `${htmlCode.slice(0, indexOfHead)}${googleFontsLinksCode}${styleCode}${htmlCode.slice(indexOfHead)}`;
+
+  function getTotalCode() {
+    const finalCssCode = isResetCssChecked ? `${resetCss}\n${cssCode}` : cssCode;
+    const styleCode = `<style> * { box-sizing : border-box; margin : 0; padding : 0; ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: #cdd9e4; border-radius: 4px; } } html, head, body { width : 100%; height : 100%;  } ${finalCssCode}</style>`;
+    const indexOfHead = htmlCode.indexOf('</head>');
+    return `${htmlCode.slice(0, indexOfHead)}${googleFontsLinksCode}${styleCode}${htmlCode.slice(indexOfHead)}`;
+  }
 
   useEffect(() => {
     if (iframeRef.current) {
       setIframeRef(iframeRef);
     }
   }, [iframeRef]);
+
+  useEffect(() => {
+    if (iframeRef.current?.contentWindow) {
+      scrollPosition.current = iframeRef.current.contentWindow.scrollY;
+    }
+
+    if (iframeRef.current) {
+      const iframeDocument = iframeRef.current.contentDocument;
+      if (iframeDocument) {
+        iframeDocument.open();
+        iframeDocument.write(getTotalCode());
+        iframeDocument.close();
+
+        iframeRef.current.onload = async () => {
+          if (iframeRef.current && iframeRef.current.contentWindow) {
+            iframeRef.current.contentWindow.scrollTo(0, scrollPosition.current);
+          }
+        };
+      }
+    }
+  }, [isResetCssChecked, htmlCode, cssCode]);
 
   // TODO: 상수 분리한 후 재사용성 높이기
   /* eslint-disable */
@@ -118,7 +143,7 @@ export const PreviewBox = ({
         {activeTab === 'preview' && (
           <iframe
             ref={iframeRef}
-            srcDoc={totalCode}
+            srcDoc={getTotalCode()}
             className="h-full w-full"
             title="Preview"
             sandbox="allow-same-origin allow-scripts allow-popups allow-top-navigation-by-user-activation"
