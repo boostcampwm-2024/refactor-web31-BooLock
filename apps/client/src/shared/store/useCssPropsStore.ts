@@ -2,6 +2,7 @@ import { removeCssClassNamePrefix, trackEvent } from '../utils';
 
 import { TTotalCssPropertyObj } from '@/shared/types';
 import { create } from 'zustand';
+import { removeCssClassNamePrefix, trackEvent } from '../utils';
 
 type TcssProps = {
   currentCssClassName: string;

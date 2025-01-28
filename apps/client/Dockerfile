@@ -1,3 +1,4 @@
+
 ARG DOCKERHUB_USERNAME
 ARG TYPE
 FROM ${DOCKERHUB_USERNAME}/base-image-${TYPE} AS frontend-build

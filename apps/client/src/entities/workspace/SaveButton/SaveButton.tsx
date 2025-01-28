@@ -9,6 +9,7 @@ import { Spinner } from '@/shared/ui';
  */
 export const SaveButton = () => {
   const { handleSave, isCapture, isPending } = useWorkspaceSave();
+
   return (
     <>
       <p>{isPending || isCapture ? '저장 중' : '저장 완료'}</p>

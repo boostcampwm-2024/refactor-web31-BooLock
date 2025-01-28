@@ -24,6 +24,7 @@ export const useGetWorkspace = (workspaceId: string) => {
   const { setIsResetCssChecked } = useResetCssStore();
   const { setInitialImageMap, setInitialImageList } = useImageModalStore();
   const { data, isError } = useSuspenseQuery({
+
     queryKey: workspaceKeys.detail(workspaceId),
     queryFn: () => {
       resetChangedStatusState();
