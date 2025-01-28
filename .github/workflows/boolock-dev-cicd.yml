@@ -2,7 +2,9 @@ name: dev ci/cd action
 
 on:
   push:
-    branches: ['main']
+    branches: ['dev']
+  pull_request:
+    branches: ['dev']
 
 jobs:
   build:
@@ -73,7 +75,7 @@ jobs:
           build-args: |
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             TYPE=test
-
+            
   deploy:
     if: github.event_name == 'push'
     needs: build
