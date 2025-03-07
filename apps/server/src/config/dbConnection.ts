@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import { createTunnel } from 'tunnel-ssh';
+import fs from 'fs';
 
 const setDbConnection = async () => {
   const isLocal = process.env.IS_LOCAL === 'true';
@@ -14,7 +15,7 @@ const setDbConnection = async () => {
       host: process.env.SSH_HOST,
       port: process.env.SSH_PORT,
       username: process.env.SSH_USER,
-      password: process.env.SSH_PASSWORD,
+      privateKey: fs.readFileSync('./pem/boolock-public-key.pem'),
     };
 
     const serverOptions = {
