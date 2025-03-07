@@ -2,7 +2,9 @@ name: main ci/cd action
 
 on:
   push:
-    branches: ['main']
+    branches: ['dev']
+  pull_request:
+    branches: ['dev']
   workflow_dispatch:
 
 jobs:
@@ -85,25 +87,25 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      # - name: Login to Docker Hub
+      #   run: |
+      #     echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Deploy with docker
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.TEST_SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd boolock/refactor-web31-BooLock
             git fetch origin
-            git checkout main
-            git pull origin main
+            git checkout hotfix_250308
+            git pull origin hotfix_250308
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
-            sudo docker compose pull
-            sudo docker compose up -d --force-recreate --remove-orphans
+            sudo docker compose -f docker-compose.yml pull
+            sudo docker compose -f docker-compose.yml up -d --force-recreate --remove-orphans
