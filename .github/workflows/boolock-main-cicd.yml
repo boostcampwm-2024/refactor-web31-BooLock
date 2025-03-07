@@ -87,7 +87,7 @@ jobs:
     steps:
       - name: Login to Docker Hub
         run: |
-          "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Deploy with docker
         uses: appleboy/ssh-action@v0.1.6
