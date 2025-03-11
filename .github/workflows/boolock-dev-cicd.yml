@@ -2,7 +2,10 @@ name: dev ci/cd action
 
 on:
   push:
-    branches: ['main']
+    branches: ['dev']
+  pull_request:
+    branches: ['dev']
+  workflow_dispatch:
 
 jobs:
   build:
@@ -74,26 +77,30 @@ jobs:
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             TYPE=test
 
-  deploy:
-    if: github.event_name == 'push'
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy with docker
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.TEST_SSH_HOST }}
-          username: ${{ secrets.TEST_SSH_USER }}
-          password: ${{ secrets.TEST_SSH_PASSWORD }}
-          port: ${{ secrets.TEST_SSH_PORT }}
-          script: |
-            cd boolock/refactor-web31-BooLock
-            git fetch origin
-            git checkout dev
-            git pull origin dev
+  ## [NOTICE] 지금처럼 4대의 서버 유지가 어려워, main 서버 두개만 유지시킬 예정입니다.
+  ## 당분간은 빌드 체크만 수행하도록 합니다.
+  ## 리팩토링 작업 중 서버에 올려 실수행 과정을 체크할 필요가 있을 시 따로 말해주세요.
 
-            echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
-            echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+  # deploy:
+  #   if: github.event_name == 'push'
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Deploy with docker
+  #       uses: appleboy/ssh-action@v0.1.6
+  #       with:
+  #         host: ${{ secrets.TEST_SSH_HOST }}
+  #         username: ${{ secrets.TEST_SSH_USER }}
+  #         key: ${{ secrets.TEST_SSH_KEY }}
+  #         port: ${{ secrets.TEST_SSH_PORT }}
+  #         script: |
+  #           cd boolock/refactor-web31-BooLock
+  #           git fetch origin
+  #           git checkout hotfix_250308
+  #           git pull origin hotfix_250308
 
-            sudo docker compose -f docker-compose.test.yml pull
-            sudo docker compose -f docker-compose.test.yml up -d --force-recreate --remove-orphans
+  #           echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
+  #           echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+  #           sudo docker compose -f docker-compose.yml pull
+  #           sudo docker compose -f docker-compose.yml up -d --force-recreate --remove-orphans

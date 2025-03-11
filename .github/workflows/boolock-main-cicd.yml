@@ -2,9 +2,7 @@ name: main ci/cd action
 
 on:
   push:
-    branches: ['dev']
-  pull_request:
-    branches: ['dev']
+    branches: ['main']
   workflow_dispatch:
 
 jobs:
@@ -87,16 +85,12 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      # - name: Login to Docker Hub
-      #   run: |
-      #     echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-
       - name: Deploy with docker
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.TEST_SSH_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd boolock/refactor-web31-BooLock
