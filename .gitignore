@@ -44,3 +44,5 @@ swagger-output.json
 storybook-static/
 
 ssl/
+
+*.pem
