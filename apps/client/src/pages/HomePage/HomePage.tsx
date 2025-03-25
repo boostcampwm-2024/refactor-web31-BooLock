@@ -1,4 +1,4 @@
-import { Banner, HomeHeader, WorkspaceModal, WorkspaceSection } from '@/widgets';
+import { Banner, HomeHeader, WidthBreaker, WorkspaceModal, WorkspaceSection } from '@/widgets';
 import { useClassBlockStore, useLoadingStore, useWorkspaceStore } from '@/shared/store';
 
 import { Loading } from '@/shared/ui';
@@ -29,6 +29,7 @@ export const HomePage = () => {
         <WorkspaceSection />
         <WorkspaceModal />
       </div>
+      <WidthBreaker />
     </>
   );
 };
