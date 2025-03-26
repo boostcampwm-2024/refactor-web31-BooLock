@@ -18,3 +18,5 @@ export { CssPropsSelectBox } from './workspace/css/CssPropsSelectBox/CssPropsSel
 export { CssOptionItemList } from './workspace/css/CssOptionItemList/CssOptionItemList';
 export { CssPropsSelectBoxHeader } from './workspace/css/CssPropsSelectBoxHeader/CssPropsSelectBoxHeader';
 export { ImageTagModal } from './workspace/ImageTagModal/ImageTagModal';
+
+export { WidthBreaker } from './common/WidthBreaker/WidthBreaker';
