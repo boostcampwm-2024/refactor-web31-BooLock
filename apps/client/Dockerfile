@@ -1,4 +1,3 @@
-
 ARG DOCKERHUB_USERNAME
 ARG TYPE
 FROM ${DOCKERHUB_USERNAME}/base-image-${TYPE} AS frontend-build
@@ -11,10 +10,10 @@ RUN pnpm install --offline --frozen-lockfile &&\
 FROM nginx:alpine AS frontend
 
 COPY /apps/client/production/nginx.conf /etc/nginx/conf.d/default.conf
-COPY /apps/client/ssl /etc/nginx/ssl
-RUN chmod 644 /etc/nginx/ssl/fullchain.pem &&\ 
-  chmod 600 /etc/nginx/ssl/privkey.pem &&\ 
-  chown -R nginx:nginx /usr/share/nginx/html /etc/nginx/ssl
+# COPY /apps/client/ssl /etc/nginx/ssl
+# RUN chmod 644 /etc/nginx/ssl/fullchain.pem &&\ 
+#   chmod 600 /etc/nginx/ssl/privkey.pem &&\ 
+RUN chown -R nginx:nginx /usr/share/nginx/html
 
 COPY --from=frontend-build /app/apps/client/dist /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html 
