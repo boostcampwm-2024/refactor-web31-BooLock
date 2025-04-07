@@ -3,6 +3,8 @@ name: main ci/cd action
 on:
   push:
     branches: ['main']
+  push:
+    branches: ['feat/44']
   workflow_dispatch:
 
 jobs:
@@ -33,11 +35,11 @@ jobs:
           echo "VITE_MIXPANEL_TOKEN=${{ secrets.VITE_MIXPANEL_TOKEN }}" >> apps/client/.env
           echo "VITE_STATIC_STORAGE_URL=${{ secrets.VITE_STATIC_STORAGE_URL }}" >> apps/client/.env
 
-      - name: Set Nginx SSL files
-        run: |
-          mkdir -p apps/client/ssl
-          echo "${{ secrets.SSL_FULLCHAIN }}" > apps/client/ssl/fullchain.pem
-          echo "${{ secrets.SSL_PRIVKEY }}" > apps/client/ssl/privkey.pem
+      # - name: Set Nginx SSL files
+      #   run: |
+      #     mkdir -p apps/client/ssl
+      #     echo "${{ secrets.SSL_FULLCHAIN }}" > apps/client/ssl/fullchain.pem
+      #     echo "${{ secrets.SSL_PRIVKEY }}" > apps/client/ssl/privkey.pem
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -95,8 +97,8 @@ jobs:
           script: |
             cd boolock/refactor-web31-BooLock
             git fetch origin
-            git checkout main
-            git pull origin main
+            git checkout feat/44
+            git pull origin feat/44
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
