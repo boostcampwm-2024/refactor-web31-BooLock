@@ -2,9 +2,7 @@ name: main ci/cd action
 
 on:
   push:
-    branches: ['main']
-  push:
-    branches: ['feat/44']
+    branches: ['main', 'feat/44']
   workflow_dispatch:
 
 jobs:
