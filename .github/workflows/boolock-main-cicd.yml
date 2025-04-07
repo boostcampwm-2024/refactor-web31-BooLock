@@ -95,8 +95,8 @@ jobs:
           script: |
             cd boolock/refactor-web31-BooLock
             git fetch origin
-            git checkout hotfix_250308
-            git pull origin hotfix_250308
+            git checkout main
+            git pull origin main
 
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
             echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
